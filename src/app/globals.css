@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+/* ============================================================
+   LEADLOOM — design tokens
+   Two threads, one loom: gold = designers, teal = homeowners.
+
+   Dark is the default theme. Light applies when the system
+   prefers it (and no manual override is set), or when the
+   user picks light manually via [data-theme].
+   ============================================================ */
+
+:root,
+:root[data-theme="dark"] {
+  --ink: #0a0a0a; /* page background */
+  --ink-soft: #141414; /* raised panels */
+  --ink-card: #111111; /* card surfaces */
+  --paper: #f4f4f2; /* primary foreground */
+  --paper-dim: #c9c9c6; /* softened foreground */
+  --grey: #8a8a86; /* mid grey */
+  --grey-soft: #5c5c59; /* muted grey */
+  --line: rgba(244, 244, 242, 0.12);
+  --line-strong: rgba(244, 244, 242, 0.28);
+
+  /* accent threads */
+  --gold: #b6893f;
+  --gold-soft: #8f6d34;
+  --teal: #3f6461;
+  --teal-soft: #2c4947;
+  --btn-gold-bg: #b6893f;
+  --btn-gold-bg-hover: #c79a4d;
+  --btn-gold-text: #17181c;
+  --btn-teal-bg: #3f6461;
+  --btn-teal-bg-hover: #4a7370;
+  --btn-teal-text: #f4f4f2;
+
+  --nav-bg: rgba(10, 10, 10, 0.78);
+  --nav-bg-scrolled: rgba(10, 10, 10, 0.94);
+  --nav-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --btn-outline-hover-bg: rgba(244, 244, 242, 0.06);
+  --focus-ring: 0 0 0 3px rgba(244, 244, 242, 0.08);
+  --card-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-theme="light"]) {
+    --ink: #f5f4f1;
+    --ink-soft: #ebeae5;
+    --ink-card: #ffffff;
+    --paper: #121212;
+    --paper-dim: #3f3f3c;
+    --grey: #6b6b67;
+    --grey-soft: #9a9a92;
+    --line: rgba(18, 18, 18, 0.12);
+    --line-strong: rgba(18, 18, 18, 0.3);
+
+    /* accent threads — darkened for light background */
+    --gold: #8f6a2c;
+    --gold-soft: #b08a45;
+    --teal: #33544f;
+    --teal-soft: #5a7f7a;
+    --btn-gold-bg: #b6893f;
+    --btn-gold-bg-hover: #a37934;
+    --btn-gold-text: #171310;
+    --btn-teal-bg: #3f6461;
+    --btn-teal-bg-hover: #33544f;
+    --btn-teal-text: #f4f4f2;
+
+    --nav-bg: rgba(245, 244, 241, 0.8);
+    --nav-bg-scrolled: rgba(245, 244, 241, 0.95);
+    --nav-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --btn-outline-hover-bg: rgba(18, 18, 18, 0.05);
+    --focus-ring: 0 0 0 3px rgba(18, 18, 18, 0.08);
+    --card-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+
+    color-scheme: light;
+  }
+}
+
+:root[data-theme="light"] {
+  --ink: #f5f4f1;
+  --ink-soft: #ebeae5;
+  --ink-card: #ffffff;
+  --paper: #121212;
+  --paper-dim: #3f3f3c;
+  --grey: #6b6b67;
+  --grey-soft: #9a9a92;
+  --line: rgba(18, 18, 18, 0.12);
+  --line-strong: rgba(18, 18, 18, 0.3);
+
+  --gold: #8f6a2c;
+  --gold-soft: #b08a45;
+  --teal: #33544f;
+  --teal-soft: #5a7f7a;
+  --btn-gold-bg: #b6893f;
+  --btn-gold-bg-hover: #a37934;
+  --btn-gold-text: #171310;
+  --btn-teal-bg: #3f6461;
+  --btn-teal-bg-hover: #33544f;
+  --btn-teal-text: #f4f4f2;
+
+  --nav-bg: rgba(245, 244, 241, 0.8);
+  --nav-bg-scrolled: rgba(245, 244, 241, 0.95);
+  --nav-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --btn-outline-hover-bg: rgba(18, 18, 18, 0.05);
+  --focus-ring: 0 0 0 3px rgba(18, 18, 18, 0.08);
+  --card-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+
+  color-scheme: light;
+}
+
+/* ============================================================
+   Tailwind theme — expose runtime tokens as utility colors,
+   fonts, easings, and animations (bg-ink, text-paper, etc.)
+   ============================================================ */
+
+@theme inline {
+  /* colors */
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-card: var(--ink-card);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-grey: var(--grey);
+  --color-grey-soft: var(--grey-soft);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-teal: var(--teal);
+  --color-teal-soft: var(--teal-soft);
+
+  /* fonts (variables provided by next/font in layout.tsx) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* easings */
+  --ease-out-loom: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-loom: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* animations */
+  --animate-fade-up: fade-up 0.9s var(--ease-out-loom) forwards;
+  --animate-draw-line: draw-line 2.6s var(--ease-in-out-loom) forwards;
+  --animate-node-pulse: node-pulse 3.2s ease-in-out 2.2s infinite;
+  --animate-shake: shake 0.4s var(--ease-out-loom);
+  --animate-success-in: success-in 0.6s var(--ease-out-loom);
+  --animate-draw-check: draw-check 0.7s var(--ease-out-loom) 0.25s forwards;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes draw-line {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes node-pulse {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1.25);
+    }
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    75% {
+      transform: translateX(-3px);
+    }
+  }
+
+  @keyframes success-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes draw-check {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+/* ============================================================
+   Base styles
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+
+  ::selection {
+    background: var(--paper);
+    color: var(--ink);
+  }
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
