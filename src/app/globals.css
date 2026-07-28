@@ -147,6 +147,8 @@
   --animate-shake: shake 0.4s var(--ease-out-loom);
   --animate-success-in: success-in 0.6s var(--ease-out-loom);
   --animate-draw-check: draw-check 0.7s var(--ease-out-loom) 0.25s forwards;
+  --animate-panel-in: panel-in 0.55s var(--ease-out-loom) forwards;
+  --animate-feature-in: feature-in 0.45s var(--ease-out-loom) forwards;
 
   @keyframes fade-up {
     from {
@@ -207,6 +209,28 @@
   @keyframes draw-check {
     to {
       stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(22px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes feature-in {
+    from {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 }

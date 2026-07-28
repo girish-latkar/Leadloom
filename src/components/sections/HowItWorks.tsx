@@ -4,7 +4,7 @@ import { SectionHead } from "@/components/sections/SectionHead";
 
 export function HowItWorks() {
   return (
-    <section id="how" className="border-b border-line py-[100px]">
+    <section id="about" className="border-b border-line py-[100px]">
       <div className="mx-auto max-w-[1180px] px-8 max-sm:px-5">
         <SectionHead
           className="mb-14"

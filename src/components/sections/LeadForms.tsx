@@ -21,8 +21,13 @@ export function LeadForms() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Set initial state from URL hash (handles direct links)
-    setActiveForm(getActiveFormFromHash());
+    // On first mount, clear any stale hash so no form shows by default.
+    // Forms only become visible when the user actively clicks a CTA button.
+    const currentHash = window.location.hash.replace("#", "");
+    if (currentHash === "designer-form" || currentHash === "homeowner-form") {
+      // Remove the hash without triggering a scroll/hashchange
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
 
     function onHashChange() {
       setActiveForm(getActiveFormFromHash());

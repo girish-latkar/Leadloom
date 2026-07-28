@@ -13,7 +13,9 @@ export default function HomePage() {
         <Hero />
         <HowItWorks />
         <AudiencePanels />
-        <LeadForms />
+        <div id="contact">
+          <LeadForms />
+        </div>
       </main>
       <Footer />
     </>

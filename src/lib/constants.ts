@@ -11,9 +11,9 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { href: "#how", label: "How it works" },
-  { href: "#designers", label: "For designers" },
-  { href: "#homeowners", label: "For homeowners" },
+  { href: "#services", label: "Services" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
 ] as const;
 
 export const BUDGET_RANGES = [
@@ -98,8 +98,8 @@ export const FOOTER_COLUMNS = [
   {
     heading: "Company",
     links: [
-      { href: "#", label: "About" },
-      { href: "#", label: "Contact" },
+      { href: "#about", label: "About" },
+      { href: "#contact", label: "Contact" },
     ],
   },
 ] as const;
