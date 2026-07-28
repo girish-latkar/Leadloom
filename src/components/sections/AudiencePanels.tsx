@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { DESIGNER_PANEL, HOMEOWNER_PANEL } from "@/lib/constants";
+import { useFormNavigation } from "@/context/FormNavigationContext";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { ThreadTag } from "@/components/ui/ThreadTag";
@@ -125,10 +126,21 @@ function Panel({ id, color, content, active }: PanelProps) {
 }
 
 export function AudiencePanels() {
-  const [activeTab, setActiveTab] = useState<Tab>("designers");
+  const { activeTab, activeForm, audienceScrollToken, setActiveTab } = useFormNavigation();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (audienceScrollToken === 0 || activeForm !== null) return;
+    const timer = setTimeout(() => {
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [audienceScrollToken, activeForm]);
+
+  if (activeTab === null) return null;
 
   return (
-    <section id="services" className="border-b border-line">
+    <section ref={sectionRef} id="services" className="scroll-mt-[72px] border-b border-line">
       {/* Tab switcher — centered */}
       <div className="border-b border-line bg-ink-soft/60">
         <div className="mx-auto flex max-w-[1180px] items-center justify-center gap-1 px-8 pt-5 max-sm:px-5">

@@ -26,10 +26,10 @@ export function Hero() {
           </p>
 
           <div className={`${FADE_UP} mt-9 flex flex-wrap gap-3.5 [animation-delay:0.45s]`}>
-            <Button href="#homeowner-form" variant="teal">
+            <Button href="#homeowners" variant="teal">
               I&apos;m looking for a designer
             </Button>
-            <Button href="#designer-form" variant="gold">
+            <Button href="#designers" variant="gold">
               I&apos;m a designer
             </Button>
           </div>

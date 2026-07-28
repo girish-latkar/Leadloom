@@ -2,8 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { HowItWorks } from "@/components/sections/HowItWorks";
-import { AudiencePanels } from "@/components/sections/AudiencePanels";
-import { LeadForms } from "@/components/sections/LeadForms";
+import { FormSections } from "@/components/sections/FormSections";
 
 export default function HomePage() {
   return (
@@ -12,10 +11,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <HowItWorks />
-        <AudiencePanels />
-        <div id="contact">
-          <LeadForms />
-        </div>
+        <FormSections />
       </main>
       <Footer />
     </>

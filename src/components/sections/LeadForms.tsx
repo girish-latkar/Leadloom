@@ -1,46 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { DESIGNER_FORM, HOMEOWNER_FORM } from "@/lib/formConfig";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHead } from "@/components/sections/SectionHead";
 import { LeadForm } from "@/components/forms/LeadForm";
-
-type ActiveForm = "designer-form" | "homeowner-form" | null;
-
-function getActiveFormFromHash(): ActiveForm {
-  if (typeof window === "undefined") return null;
-  const hash = window.location.hash.replace("#", "");
-  if (hash === "designer-form" || hash === "homeowner-form") return hash;
-  return null;
-}
+import { useActiveForm } from "@/context/FormNavigationContext";
 
 export function LeadForms() {
-  const [activeForm, setActiveForm] = useState<ActiveForm>(null);
+  const activeForm = useActiveForm();
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    // On first mount, clear any stale hash so no form shows by default.
-    // Forms only become visible when the user actively clicks a CTA button.
-    const currentHash = window.location.hash.replace("#", "");
-    if (currentHash === "designer-form" || currentHash === "homeowner-form") {
-      // Remove the hash without triggering a scroll/hashchange
-      history.replaceState(null, "", window.location.pathname + window.location.search);
-    }
-
-    function onHashChange() {
-      setActiveForm(getActiveFormFromHash());
-    }
-
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
-  }, []);
 
   // Scroll into view whenever the active form changes
   useEffect(() => {
     if (activeForm === null) return;
-    // Small delay lets the DOM paint the section before scrolling
     const timer = setTimeout(() => {
       sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 50);
@@ -51,7 +25,7 @@ export function LeadForms() {
   if (activeForm === null) return null;
 
   return (
-    <section ref={sectionRef} id="forms" className="py-[100px]">
+    <section ref={sectionRef} id="forms" className="scroll-mt-[72px] py-[100px]">
       <div className="mx-auto max-w-[1180px] px-8 max-sm:px-5">
         <SectionHead
           className="mb-11"
