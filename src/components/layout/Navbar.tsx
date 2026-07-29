@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
-import { LogoMark } from "@/components/ui/icons";
+import { Logo } from "@/components/ui/Logo";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 export function Navbar() {
@@ -72,12 +72,9 @@ export function Navbar() {
           {/* Logo */}
           <a
             href="#"
-            className="group flex items-center gap-[9px] font-display text-[21px] font-semibold no-underline"
+            className="group flex items-center no-underline"
           >
-            <span className="block transition-transform duration-500 ease-out-loom group-hover:rotate-90">
-              <LogoMark />
-            </span>
-            {SITE.name}
+            <Logo className="transition-opacity duration-300 group-hover:opacity-85" />
           </a>
 
           {/* Desktop nav links */}
@@ -102,11 +99,11 @@ export function Navbar() {
           {/* Desktop CTAs */}
           <div className="flex items-center gap-2.5 max-[820px]:hidden">
             <ThemeToggle />
-            <Button href="#homeowner-form" variant="ghost">
-              Find a designer
+            <Button href={`tel:${SITE.phone}`} variant="ghost">
+              Call now
             </Button>
-            <Button href="#designer-form" variant="gold">
-              Get quality leads
+            <Button href="#contact" variant="gold">
+              Get started
             </Button>
           </div>
 
@@ -219,24 +216,23 @@ export function Navbar() {
 
         {/* CTA buttons */}
         <div className="flex flex-col gap-3 px-4 pt-6">
-          <Button href="#homeowner-form" variant="ghost" className="w-full justify-center">
-            Find a designer
+          <Button href={`tel:${SITE.phone}`} variant="ghost" className="w-full justify-center">
+            Call now
           </Button>
           <Button
-            href="#designer-form"
+            href="#contact"
             variant="gold"
             className="w-full justify-center"
             onClick={() => setMobileOpen(false)}
           >
-            Get quality leads
+            Get started
           </Button>
         </div>
 
         {/* Bottom brand accent */}
         <div className="mt-auto border-t border-line px-6 pb-8 pt-6">
           <p className="text-[12px] leading-relaxed text-grey">
-            Fewer leads.{" "}
-            <span className="text-gold">Better matches.</span>
+            Verified leads for Pune interior designers.
           </p>
         </div>
       </div>

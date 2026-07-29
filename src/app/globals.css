@@ -110,6 +110,33 @@
   color-scheme: light;
 }
 
+/* Logo — swap image with theme (matches token logic above) */
+.logo-light {
+  display: none;
+}
+
+.logo-dark {
+  display: block;
+}
+
+:root[data-theme="light"] .logo-light {
+  display: block;
+}
+
+:root[data-theme="light"] .logo-dark {
+  display: none;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-theme="light"]) .logo-light {
+    display: block;
+  }
+
+  :root:not([data-theme="dark"]):not([data-theme="light"]) .logo-dark {
+    display: none;
+  }
+}
+
 /* ============================================================
    Tailwind theme — expose runtime tokens as utility colors,
    fonts, easings, and animations (bg-ink, text-paper, etc.)

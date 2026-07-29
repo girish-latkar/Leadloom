@@ -1,46 +1,46 @@
+import Image from "next/image";
+
+import { HERO } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
-import { ClockIcon } from "@/components/ui/icons";
-import { LoomVisual } from "@/components/sections/LoomVisual";
 
 const FADE_UP = "animate-fade-up translate-y-4 opacity-0";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-line pt-[120px] pb-[90px]">
-      <div className="relative z-[2] mx-auto grid max-w-[1180px] grid-cols-[1.1fr_0.9fr] items-center gap-10 px-8 max-[900px]:grid-cols-1 max-sm:px-5">
+      <div className="relative z-[2] mx-auto grid max-w-[1180px] grid-cols-[1.05fr_0.95fr] items-center gap-12 px-8 max-[900px]:grid-cols-1 max-sm:px-5">
         <div>
           <div className={`${FADE_UP} font-mono text-xs tracking-[0.14em] text-grey uppercase [animation-delay:0.05s]`}>
-            Interior design, matched properly
+            {HERO.eyebrow}
           </div>
 
-          <h1 className={`${FADE_UP} mt-[18px] font-display text-[clamp(38px,5.4vw,64px)] leading-[1.04] font-medium tracking-[-0.01em] [animation-delay:0.15s]`}>
-            Fewer leads.
-            <br />
-            <em className="text-gold italic">Better</em> matches.
+          <h1 className={`${FADE_UP} mt-[18px] font-display text-[clamp(34px,4.8vw,58px)] leading-[1.06] font-medium tracking-[-0.02em] [animation-delay:0.15s]`}>
+            {HERO.heading}
           </h1>
 
-          <p className={`${FADE_UP} mt-[22px] max-w-[480px] text-lg leading-relaxed text-paper-dim [animation-delay:0.3s]`}>
-            Leadloom weaves homeowners together with the interior designers who actually fit their
-            home, budget, and taste — so designers stop chasing cold leads, and homeowners stop
-            scrolling portfolios that don&apos;t fit.
+          <p className={`${FADE_UP} mt-[22px] max-w-[500px] text-lg leading-relaxed text-paper-dim [animation-delay:0.3s]`}>
+            {HERO.description}
           </p>
 
           <div className={`${FADE_UP} mt-9 flex flex-wrap gap-3.5 [animation-delay:0.45s]`}>
-            <Button href="#homeowners" variant="teal">
-              I&apos;m looking for a designer
-            </Button>
-            <Button href="#designers" variant="gold">
-              I&apos;m a designer
-            </Button>
-          </div>
-
-          <div className={`${FADE_UP} mt-[22px] flex items-center gap-2 text-[13px] text-grey [animation-delay:0.6s]`}>
-            <ClockIcon />
-            Every match is reviewed before it&apos;s sent — not auto-blasted to twenty inboxes.
+            {HERO.ctas.map((cta) => (
+              <Button key={cta.label} href={cta.href} variant={cta.variant} className="px-6 py-3">
+                {cta.label}
+              </Button>
+            ))}
           </div>
         </div>
 
-        <LoomVisual />
+        <div className={`${FADE_UP} relative aspect-[4/3] overflow-hidden rounded-md [animation-delay:0.35s]`}>
+          <Image
+            src={HERO.image.src}
+            alt={HERO.image.alt}
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="(max-width: 900px) 100vw, 540px"
+          />
+        </div>
       </div>
     </section>
   );

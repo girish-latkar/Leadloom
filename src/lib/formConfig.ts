@@ -95,8 +95,8 @@ export const HOMEOWNER_FORM: LeadFormConfig = {
       { name: "email", label: "Email", type: "email", required: true, placeholder: "priya@email.com" },
     ],
     [
-      { name: "phone", label: "Phone", type: "tel", placeholder: "(555) 000-0000" },
-      { name: "city", label: "City", type: "text", required: true, placeholder: "Austin, TX" },
+      { name: "phone", label: "Phone", type: "tel", placeholder: "+91 98765 43210" },
+      { name: "city", label: "City", type: "text", required: true, placeholder: "Pune" },
     ],
     [
       {
@@ -145,5 +145,54 @@ export const HOMEOWNER_FORM: LeadFormConfig = {
   success: {
     title: "Request received",
     body: "We're finding your match now. Expect to hear from us within 2 business days with a designer intro.",
+  },
+};
+
+export const INQUIRY_FORM: LeadFormConfig = {
+  id: "inquiry-form",
+  formId: "form-inquiry",
+  accent: "teal",
+  tag: "Start your search",
+  heading: "Not sure if your project is ready? Let's talk it through.",
+  sub: "Tell us a bit about your space and style. We'll confirm the details and connect you with one of our verified interior designers in Pune.",
+  rows: [
+    [
+      { name: "name", label: "Your name", type: "text", required: true, placeholder: "Your name" },
+      { name: "email", label: "Email address", type: "email", required: true, placeholder: "you@email.com" },
+    ],
+    [{ name: "phone", label: "Phone number", type: "tel", required: true, placeholder: "+91 98765 43210" }],
+    [
+      {
+        name: "projectType",
+        label: "What kind of project are you planning?",
+        type: "select",
+        required: true,
+        options: PROJECT_TYPES,
+        selectPrompt: "Select one",
+      },
+    ],
+    [
+      {
+        name: "location",
+        label: "Where in Pune is the project located?",
+        type: "text",
+        required: true,
+        placeholder: "e.g. Koregaon Park, Baner, Hinjewadi",
+      },
+    ],
+    [
+      {
+        name: "vision",
+        label: "Tell us a little about your vision or any specific requirements",
+        type: "textarea",
+        placeholder: "Rooms, style, timeline, anything that helps us understand your project...",
+      },
+    ],
+  ],
+  submitLabel: "Send inquiry",
+  finePrint: "We'll follow up within 2 business days to confirm your project details.",
+  success: {
+    title: "Inquiry sent",
+    body: "Thanks for reaching out. PriTam will review your details and get back to you within 2 business days.",
   },
 };
