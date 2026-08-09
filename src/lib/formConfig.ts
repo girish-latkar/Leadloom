@@ -63,7 +63,7 @@ export const DESIGNER_FORM: LeadFormConfig = {
         placeholder: "e.g. mid-century, coastal, full-home renovations",
       },
     ],
-    [{ name: "portfolio", label: "Google drive link", type: "url", placeholder: "https://drive.google.com/..." }],
+    [{ name: "portfolio", label: "Google drive  portfolio link", type: "url", placeholder: "https://drive.google.com/..." }],
     [
       {
         name: "about",
