@@ -9,20 +9,23 @@ import { ThreadTag } from "@/components/ui/ThreadTag";
 import { SuccessCheckIcon } from "@/components/ui/icons";
 import { FormField } from "@/components/forms/FormField";
 
-type Phase = "editing" | "fading" | "submitted";
+type Phase = "editing" | "submitting" | "fading" | "submitted";
 
 interface LeadFormProps {
   config: LeadFormConfig;
+  /** Removes hover lift — use inside modals or embedded panels */
+  embedded?: boolean;
 }
 
-export function LeadForm({ config }: LeadFormProps) {
+export function LeadForm({ config, embedded = false }: LeadFormProps) {
   const [phase, setPhase] = useState<Phase>("editing");
   const [errors, setErrors] = useState<Set<string>>(new Set());
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const fieldId = (name: string) => `${config.formId}-${name}`;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -34,14 +37,46 @@ export function LeadForm({ config }: LeadFormProps) {
 
     if (invalid.length > 0) {
       setErrors(new Set(invalid));
+      setSubmitError(null);
       form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
       return;
     }
 
-    // Fade the form out, then show the success state.
-    // (Submission endpoint intentionally omitted — wire up an API route here.)
-    setPhase("fading");
-    window.setTimeout(() => setPhase("submitted"), 350);
+    const fields: Record<string, string> = {};
+    for (const field of config.rows.flat()) {
+      fields[field.name] = String(data.get(field.name) ?? "").trim();
+    }
+
+    setPhase("submitting");
+    setSubmitError(null);
+
+    try {
+      const response = await fetch("/api/submit-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          formId: config.formId,
+          fields,
+          website: String(data.get("website") ?? ""),
+        }),
+      });
+
+      const result = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        throw new Error(result.error ?? "Unable to send your submission.");
+      }
+
+      setPhase("fading");
+      window.setTimeout(() => setPhase("submitted"), 350);
+    } catch (error) {
+      setPhase("editing");
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Unable to send your submission. Please try again or call us directly.",
+      );
+    }
   }
 
   /** Clear a field's error state as the user types. */
@@ -55,13 +90,15 @@ export function LeadForm({ config }: LeadFormProps) {
     });
   }
 
+  const isSubmitting = phase === "submitting";
+
   return (
     <div
       id={config.id}
       className={cn(
         "scroll-mt-[100px] rounded-md border border-line bg-ink-card p-10 max-sm:px-[22px] max-sm:py-7",
-        "transition-[border-color,box-shadow,transform] duration-[350ms] ease-out-loom",
-        "hover:-translate-y-[3px] hover:border-line-strong hover:shadow-(--card-shadow)",
+        !embedded &&
+          "transition-[border-color,box-shadow,transform] duration-[350ms] ease-out-loom hover:-translate-y-[3px] hover:border-line-strong hover:shadow-(--card-shadow)",
       )}
     >
       <ThreadTag color={config.accent}>{config.tag}</ThreadTag>
@@ -85,9 +122,19 @@ export function LeadForm({ config }: LeadFormProps) {
           onInput={handleInput}
           className={cn(
             "transition-opacity duration-[350ms]",
-            phase === "fading" ? "opacity-0" : "opacity-100",
+            phase === "fading" || isSubmitting ? "opacity-60" : "opacity-100",
           )}
         >
+          {/* Honeypot — hidden from users, catches bots */}
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="pointer-events-none absolute left-[-9999px] h-0 w-0 opacity-0"
+          />
+
           {config.rows.map((row, rowIndex) =>
             row.length === 2 ? (
               <div key={rowIndex} className="grid grid-cols-2 gap-3.5 max-[480px]:grid-cols-1">
@@ -112,12 +159,19 @@ export function LeadForm({ config }: LeadFormProps) {
             ),
           )}
 
+          {submitError && (
+            <p className="mt-4 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+              {submitError}
+            </p>
+          )}
+
           <Button
             type="submit"
             variant={config.accent}
-            className="mt-[26px] w-full p-[13px] text-[15px]"
+            disabled={isSubmitting}
+            className="mt-[26px] w-full p-[13px] text-[15px] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {config.submitLabel}
+            {isSubmitting ? "Sending..." : config.submitLabel}
           </Button>
           <p className="mt-3.5 text-xs leading-normal text-grey-soft">{config.finePrint}</p>
         </form>

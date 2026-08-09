@@ -1,17 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import { usePathname } from "next/navigation";
 
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
+import { AudienceToggle } from "@/components/layout/AudienceToggle";
+import { GetStartedModal } from "@/components/layout/GetStartedModal";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { useAudience } from "@/context/AudienceContext";
+import { useFooterContact } from "@/context/FooterContactContext";
 
 export function Navbar() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const { audience } = useAudience();
+  const { showContact } = useFooterContact();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+
+  function openGetStarted() {
+    setFormOpen(true);
+    setMobileOpen(false);
+  }
+
+  function goHome(event: ReactMouseEvent<HTMLAnchorElement>) {
+    if (!isHome) return;
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setMobileOpen(false);
+  }
 
   useEffect(() => {
     let ticking = false;
@@ -28,6 +50,15 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close menu when footer contact is toggled
+  useEffect(() => {
+    function onContactToggle() {
+      setMobileOpen(false);
+    }
+    window.addEventListener("leadloom:contact-toggle", onContactToggle);
+    return () => window.removeEventListener("leadloom:contact-toggle", onContactToggle);
   }, []);
 
   // Close menu on route/hash change
@@ -71,29 +102,36 @@ export function Navbar() {
         <div className="mx-auto flex h-[72px] max-w-[1180px] items-center justify-between px-8 max-sm:px-5">
           {/* Logo */}
           <a
-            href="#"
+            href="/"
+            onClick={goHome}
             className="group flex items-center no-underline"
           >
             <Logo className="transition-opacity duration-300 group-hover:opacity-85" />
           </a>
 
-          {/* Desktop nav links */}
-          <div className="flex items-center gap-7 text-sm text-grey max-[820px]:hidden">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "relative no-underline transition-colors duration-250 hover:text-paper",
-                  "after:absolute after:-bottom-[5px] after:left-0 after:h-px after:w-full",
-                  "after:origin-right after:scale-x-0 after:bg-gold",
-                  "after:transition-transform after:duration-[350ms] after:ease-out-loom",
-                  "hover:after:origin-left hover:after:scale-x-100",
-                )}
-              >
-                {link.label}
-              </a>
-            ))}
+          {/* Desktop nav links + audience toggle */}
+          <div className="flex items-center gap-6 max-[820px]:hidden">
+            <div className="flex items-center gap-7 text-sm text-grey">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={link.href === "/" ? goHome : undefined}
+                  className={cn(
+                    "relative no-underline transition-colors duration-250 hover:text-paper",
+                    "after:absolute after:-bottom-[5px] after:left-0 after:h-px after:w-full",
+                    "after:origin-right after:scale-x-0 after:bg-gold",
+                    "after:transition-transform after:duration-[350ms] after:ease-out-loom",
+                    "hover:after:origin-left hover:after:scale-x-100",
+                    "audience" in link && link.audience !== audience && "opacity-60",
+                    link.href === "#contact" && showContact && "text-gold after:origin-left after:scale-x-100",
+                  )}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            {isHome && <AudienceToggle />}
           </div>
 
           {/* Desktop CTAs */}
@@ -102,7 +140,7 @@ export function Navbar() {
             <Button href={`tel:${SITE.phone}`} variant="ghost">
               Call now
             </Button>
-            <Button href="#contact" variant="gold">
+            <Button variant="gold" onClick={openGetStarted}>
               Get started
             </Button>
           </div>
@@ -190,18 +228,32 @@ export function Navbar() {
           </button>
         </div>
 
+        {/* Audience toggle — homepage only */}
+        {isHome && (
+          <div className="px-4 pt-5">
+            <AudienceToggle variant="stacked" />
+          </div>
+        )}
+
         {/* Nav links */}
-        <nav className="flex flex-col gap-1 px-4 pt-6" aria-label="Mobile navigation">
+        <nav className={cn("flex flex-col gap-1 px-4", isHome ? "pt-4" : "pt-5")} aria-label="Mobile navigation">
           {NAV_LINKS.map((link, i) => (
             <a
               key={link.href}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
+              onClick={(event) => {
+                if (link.href === "/") {
+                  goHome(event);
+                  return;
+                }
+                setMobileOpen(false);
+              }}
               style={{ transitionDelay: mobileOpen ? `${i * 60 + 80}ms` : "0ms" }}
               className={cn(
                 "group flex items-center gap-3 rounded-lg px-3 py-3.5 text-[15px] font-medium text-grey no-underline",
                 "transition-all duration-300 ease-out-loom hover:bg-(--btn-outline-hover-bg) hover:text-paper",
                 mobileOpen ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0",
+                link.href === "#contact" && showContact && "text-gold",
               )}
             >
               {/* Gold accent dot */}
@@ -219,12 +271,7 @@ export function Navbar() {
           <Button href={`tel:${SITE.phone}`} variant="ghost" className="w-full justify-center">
             Call now
           </Button>
-          <Button
-            href="#contact"
-            variant="gold"
-            className="w-full justify-center"
-            onClick={() => setMobileOpen(false)}
-          >
+          <Button variant="gold" className="w-full justify-center" onClick={openGetStarted}>
             Get started
           </Button>
         </div>
@@ -236,6 +283,8 @@ export function Navbar() {
           </p>
         </div>
       </div>
+
+      <GetStartedModal open={formOpen} onClose={() => setFormOpen(false)} />
     </>
   );
 }

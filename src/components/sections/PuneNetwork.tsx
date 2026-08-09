@@ -6,7 +6,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export function PuneNetwork() {
   return (
-    <section className="border-b border-line bg-ink-soft py-[100px] max-sm:py-16">
+    <section id="network" className="border-b border-line bg-ink-soft py-[100px] max-sm:py-16">
       <div className="mx-auto grid max-w-[1180px] grid-cols-2 items-center gap-12 px-8 max-[900px]:grid-cols-1 max-sm:px-5">
         <Reveal className="relative aspect-[4/3] overflow-hidden rounded-md max-[900px]:order-2">
           <Image

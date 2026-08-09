@@ -8,15 +8,31 @@ export const SITE = {
   title: "Leadloom — Verified interior design leads in Pune",
   description:
     "Leadloom connects homeowners with verified interior designers in Pune. We qualify every lead so designers only meet projects that fit.",
-  email: "pritamautade33@gmail.com",
-  phone: "+919876543210",
+  email: "leadloomconnect@gmail.comm",
+  phone: "+919552970123",
   location: "Pune, Maharashtra",
+  address: "Pune, Maharashtra, India",
 } as const;
 
+export const CONTACT_INFO = {
+  email: SITE.email,
+  phone: SITE.phone,
+  phoneDisplay: "+91 95529 70123",
+  address: SITE.address,
+} as const;
+
+export const SOCIAL_LINKS = [
+  { platform: "instagram" as const, label: "Instagram", href: "https://www.instagram.com/leadloompune?igsh=MXRxd2xvOHR3NzExcg==" },
+  { platform: "twitter" as const, label: "Twitter", href: "https://twitter.com/leadloom" },
+  { platform: "linkedin" as const, label: "LinkedIn", href: "https://linkedin.com/company/leadloom" },
+  { platform: "whatsapp" as const, label: "WhatsApp", href: `https://wa.me/${SITE.phone.replace(/\D/g, "")}` },
+] as const;
+
 export const NAV_LINKS = [
-  { href: "#qualify", label: "Services" },
-  { href: "#deliver", label: "About" },
-  { href: "#contact", label: "Contact" },
+  { href: "/", label: "Home" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
+  { href: "#contact", label: "Contact", audience: "homeowners" as const },
 ] as const;
 
 export const HERO = {
@@ -30,7 +46,7 @@ export const HERO = {
   },
   ctas: [
     { href: "#qualify", label: "See how we match", variant: "teal" as const },
-    { href: `mailto:${SITE.email}`, label: "Email us", variant: "ghost" as const },
+    { href: "#contact", label: "Get matched", variant: "ghost" as const },
   ],
 } as const;
 
@@ -58,54 +74,37 @@ export const LEAD_QUALIFICATION = {
   description:
     "Most lead services flood your inbox. We screen every homeowner in Pune so you only meet the ones ready to move forward with a designer.",
   cta: { href: "#contact", label: "See how we qualify" },
-  items: [
+  image: {
+    src: "/images/qualify-woman-desk.png",
+    alt: "Woman reviewing a lead qualification document at a desk with a potted plant",
+  },
+  criteria: [
     {
-      type: "card" as const,
       num: "01",
       title: "Real project in hand",
       body: "We only send leads with an active renovation, new home, or redesign project already planned.",
     },
     {
-      type: "card" as const,
       num: "02",
       title: "Budget confirmed upfront",
       body: "Every homeowner shares a budget range before we introduce them. No guesswork, no awkward conversations.",
     },
     {
-      type: "image" as const,
-      src: "/images/qualify-phone-dashboard.png",
-      alt: "Smartphone showing a qualified homeowner profile on a lead qualification dashboard",
-    },
-    {
-      type: "image" as const,
-      src: "/images/qualify-phone-desk.png",
-      alt: "Smartphone on desk next to tea and notebook, symbolizing quiet efficiency",
-    },
-    {
-      type: "card" as const,
       num: "03",
       title: "Timeline is set",
       body: "We ask when they need to start and finish. You get leads that fit your schedule.",
     },
     {
-      type: "card" as const,
       num: "04",
       title: "Design style clarified",
       body: "Homeowners describe their preferred aesthetic. We match them to designers whose portfolio fits.",
     },
     {
-      type: "card" as const,
       num: "05",
       title: "Contact verified",
       body: "Each lead's phone and email are checked. You won't waste time on disconnected numbers.",
     },
     {
-      type: "image" as const,
-      src: "/images/qualify-woman-desk.png",
-      alt: "Woman reviewing a lead qualification document at a desk with a potted plant",
-    },
-    {
-      type: "card" as const,
       num: "06",
       title: "One person, real care",
       body: "PriTam screens every lead personally in Pune. No bots, no automated lists.",
@@ -150,6 +149,58 @@ export const PUNE_NETWORK = {
     alt: "A bright interior design studio with fabric samples, blueprints, and a large wooden table",
   },
   cta: { href: "#contact", label: "Get started with Leadloom" },
+} as const;
+
+export const ABOUT = {
+  eyebrow: "About Leadloom",
+  heading: "Your Dream Home Deserves the Right Designer",
+  description:
+    "Buying a home is one of life's biggest milestones. LeadLoom makes the next step — finding the right interior designer — just as meaningful. We connect homeowners with verified professionals based on project requirements, budget, style, and location.",
+  image: {
+    src: "/images/about.png",
+    alt: "Interior designers reviewing blueprints and design materials together",
+  },
+  mission: {
+    title: "Our Mission",
+    body: "Make the interior design journey transparent, reliable, and stress-free.",
+  },
+  vision: {
+    title: "Our Vision",
+    body: "Become India's most trusted platform for verified interior design professionals.",
+  },
+} as const;
+
+export const SERVICES = {
+  eyebrow: "Our services",
+  heading: "Verified leads for designers. Thoughtful matches for homeowners.",
+  description:
+    "Most lead services flood your inbox with unqualified contacts. Leadloom screens every homeowner in Pune and verifies every designer profile — so both sides only meet when the project genuinely fits.",
+  image: {
+    src: "/images/studio.png",
+    alt: "A bright interior design studio with fabric samples, blueprints, and a large wooden table",
+  },
+  offerings: [
+    {
+      title: "For designers",
+      body: "Stop paying for leads you'll never close. We send you homeowners who already match your style, minimum project size, and availability — reviewed by a person, not scraped from a form.",
+      points: [
+        "Budget and scope confirmed before it reaches you",
+        "Matched to your portfolio's style, not your zip code alone",
+        "No bidding wars — each homeowner sees one or two studios, not ten",
+        "Set your own project minimums and pause anytime",
+      ],
+    },
+    {
+      title: "For homeowners",
+      body: "Tell us about your space and your taste once. We match you to vetted designers whose portfolio and pricing genuinely fit — no cold calls, no directory scrolling.",
+      points: [
+        "Matched by style and project type, not just distance",
+        "Every designer's portfolio and reviews verified in advance",
+        "One thoughtful introduction, not ten unsolicited calls",
+        "Free for homeowners, always",
+      ],
+    },
+  ],
 } as const;
 
 export const WHAT_WE_DELIVER = {
@@ -223,8 +274,8 @@ export const HOMEOWNER_PANEL = {
 } as const;
 
 export const FOOTER_LINKS = [
-  { href: "#", label: "Home" },
-  { href: "#deliver", label: "About" },
-  { href: "#qualify", label: "Services" },
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services" },
   { href: "#contact", label: "Contact" },
 ] as const;
