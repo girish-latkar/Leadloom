@@ -55,7 +55,14 @@ export async function sendLeadEmail(submission: ValidatedLeadSubmission) {
     port,
     secure: port === 465,
     auth: { user, pass },
+    ...(host.includes("gmail.com") && {
+      requireTLS: true,
+      tls: { minVersion: "TLSv1.2" },
+    }),
   });
+
+  // Fail fast with a clear server log when credentials are wrong.
+  await transporter.verify();
 
   const { text, html } = buildEmailContent(submission);
 
