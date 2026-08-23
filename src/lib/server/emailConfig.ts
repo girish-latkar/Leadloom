@@ -1,6 +1,7 @@
 import "server-only";
 
 import { sanitizeHeaderValue } from "@/lib/server/escapeHtml";
+import { isTurnstileEnabled } from "@/lib/turnstileConfig";
 
 export interface SmtpConfig {
   host: string;
@@ -75,10 +76,7 @@ export function getRegistrationEmailConfig(): RegistrationEmailConfig {
 }
 
 export function isTurnstileConfigured(): boolean {
-  return Boolean(
-    process.env.TURNSTILE_SECRET_KEY?.trim() &&
-      process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim(),
-  );
+  return isTurnstileEnabled();
 }
 
 export function isRateLimitConfigured(): boolean {

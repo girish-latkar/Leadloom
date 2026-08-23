@@ -1,6 +1,6 @@
 import "server-only";
 
-import { isTurnstileConfigured } from "@/lib/server/emailConfig";
+import { getTurnstileSecretKey, isTurnstileEnabled } from "@/lib/turnstileConfig";
 
 interface TurnstileVerifyResponse {
   success: boolean;
@@ -11,26 +11,24 @@ export async function verifyTurnstileToken(
   token: unknown,
   remoteIp: string | null,
 ): Promise<{ ok: true } | { ok: false }> {
-  if (!isTurnstileConfigured()) {
+  if (!isTurnstileEnabled()) {
     if (process.env.NODE_ENV === "production") {
       console.error("[turnstile] Turnstile is not configured in production.");
       return { ok: false };
     }
 
-    console.warn("[turnstile] Turnstile not configured — skipping verification in development.");
     return { ok: true };
   }
 
   if (typeof token !== "string" || !token.trim()) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn("[turnstile] No token in development — skipping verification.");
-      return { ok: true };
-    }
-
     return { ok: false };
   }
 
-  const secret = process.env.TURNSTILE_SECRET_KEY!.trim();
+  const secret = getTurnstileSecretKey();
+  if (!secret) {
+    console.error("[turnstile] Secret key is missing.");
+    return { ok: false };
+  }
 
   const body = new URLSearchParams({
     secret,

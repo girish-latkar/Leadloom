@@ -104,7 +104,7 @@ Obtain SMTP settings from your email provider (Google Workspace, Microsoft 365, 
 1. Create a Turnstile widget in the [Cloudflare dashboard](https://dash.cloudflare.com/).
 2. Add the **site key** as `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (public; used by the browser widget).
 3. Add the **secret key** as `TURNSTILE_SECRET_KEY` (server-only; never expose to the client).
-4. In production, both keys are required. In local development, submissions work without Turnstile if keys are omitted. Turnstile only loads on `localhost` / `127.0.0.1` in dev — if you open the site via a LAN IP (e.g. `192.168.x.x:3000`), the widget is skipped and submissions still work locally.
+4. In production, both keys are required. In local development, Cloudflare’s test keys are used automatically so the widget works on any hostname (`localhost`, LAN IP, etc.) without extra dashboard setup.
 
 ### Configure rate limiting (recommended for production)
 

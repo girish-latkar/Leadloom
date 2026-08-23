@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { getTurnstileSiteKey, isTurnstileActive } from "@/lib/turnstile";
+import { getTurnstileSiteKey, isTurnstileEnabled } from "@/lib/turnstileConfig";
 
 declare global {
   interface Window {
@@ -13,8 +13,10 @@ declare global {
           sitekey: string;
           callback: (token: string) => void;
           "expired-callback"?: () => void;
-          "error-callback"?: () => void;
+          "error-callback"?: (errorCode?: string) => boolean | void;
           theme?: "light" | "dark" | "auto";
+          appearance?: "always" | "execute" | "interaction-only";
+          size?: "normal" | "compact";
         },
       ) => string;
       reset: (widgetId?: string) => void;
@@ -87,9 +89,14 @@ export function TurnstileField({ onVerify, onExpire, onError, resetKey }: Turnst
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
           theme: "auto",
+          appearance: "always",
+          size: "normal",
           callback: (token) => callbacksRef.current.onVerify(token),
           "expired-callback": () => callbacksRef.current.onExpire(),
-          "error-callback": () => callbacksRef.current.onError(),
+          "error-callback": () => {
+            callbacksRef.current.onError();
+            return true;
+          },
         });
       })
       .catch(() => {
@@ -105,7 +112,11 @@ export function TurnstileField({ onVerify, onExpire, onError, resetKey }: Turnst
     };
   }, [resetKey, siteKey]);
 
-  if (!isTurnstileActive()) return null;
+  if (!isTurnstileEnabled()) return null;
 
-  return <div ref={containerRef} className="mt-5 min-h-[65px]" />;
+  return (
+    <div className="mt-5">
+      <div ref={containerRef} className="min-h-[65px]" />
+    </div>
+  );
 }

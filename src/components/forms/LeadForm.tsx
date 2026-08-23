@@ -9,7 +9,7 @@ import { ThreadTag } from "@/components/ui/ThreadTag";
 import { SuccessCheckIcon } from "@/components/ui/icons";
 import { FormField } from "@/components/forms/FormField";
 import { TurnstileField } from "@/components/forms/TurnstileField";
-import { isTurnstileActive } from "@/lib/turnstile";
+import { isTurnstileEnabled } from "@/lib/turnstileConfig";
 import { validateField, validateFormFields } from "@/lib/validateFormFields";
 
 type Phase = "editing" | "submitting" | "fading" | "submitted";
@@ -33,7 +33,7 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
   const [turnstileRequired, setTurnstileRequired] = useState(false);
 
   useEffect(() => {
-    setTurnstileRequired(isTurnstileActive());
+    setTurnstileRequired(isTurnstileEnabled());
   }, []);
 
   const fieldId = (name: string) => `${config.formId}-${name}`;
