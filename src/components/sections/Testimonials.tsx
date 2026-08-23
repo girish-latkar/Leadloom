@@ -1,23 +1,29 @@
+"use client";
+
 import Image from "next/image";
 
+import { useAudience } from "@/context/AudienceContext";
 import { TESTIMONIALS } from "@/lib/constants";
 import { Reveal } from "@/components/ui/Reveal";
 
 export function Testimonials() {
+  const { audience } = useAudience();
+  const content = TESTIMONIALS[audience];
+
   return (
     <section id="testimonials" className="border-b border-line py-[100px] max-sm:py-16">
       <div className="mx-auto max-w-[1180px] px-8 max-sm:px-5">
         <Reveal className="max-w-[640px]">
           <div className="font-mono text-xs tracking-[0.14em] text-grey uppercase">
-            {TESTIMONIALS.eyebrow}
+            {content.eyebrow}
           </div>
           <h2 className="mt-3.5 font-display text-[clamp(28px,3.6vw,42px)] leading-[1.12] font-medium tracking-[-0.01em]">
-            {TESTIMONIALS.heading}
+            {content.heading}
           </h2>
         </Reveal>
 
         <div className="mt-14 grid grid-cols-3 gap-6 max-[980px]:grid-cols-1">
-          {TESTIMONIALS.items.map((item, index) => (
+          {content.items.map((item, index) => (
             <Reveal
               key={item.name}
               delay={index * 0.1}

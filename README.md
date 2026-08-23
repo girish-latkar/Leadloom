@@ -127,3 +127,9 @@ Obtain SMTP settings from your email provider (Google Workspace, Microsoft 365, 
 3. Configure Turnstile for your production domain.
 4. Configure Upstash for production rate limiting.
 5. Run `npm run build` before deploying.
+
+### SEO
+
+The site ships with sitemap (`/sitemap.xml`), robots (`/robots.txt`), Open Graph / Twitter metadata, canonical URLs, and LocalBusiness + WebSite JSON-LD.
+
+Set `NEXT_PUBLIC_SITE_URL` to your production origin (e.g. `https://leadloom.in`) before deploying so canonical links, the sitemap, and social previews use the correct domain.

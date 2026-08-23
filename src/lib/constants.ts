@@ -104,31 +104,60 @@ export const LEAD_QUALIFICATION = {
 } as const;
 
 export const TESTIMONIALS = {
-  eyebrow: "What designers say",
-  heading: "0 wasted trips since we started screening",
-  items: [
-    {
-      quote:
-        "Before Leadloom, I was driving to consultations where the homeowner hadn't even checked their budget. Now I only get leads that are already qualified and serious about moving forward.",
-      name: "Anika Sharma",
-      role: "Interior designer, Pune",
-      image: "/images/testimonial-anika.png",
-    },
-    {
-      quote:
-        "The screening call saved me hours. I knew the client's style preferences and budget before I walked in. That first meeting turned into a signed contract within a week.",
-      name: "Rohan Mehta",
-      role: "Principal designer at Form & Space",
-      image: "/images/testimonial-rohan.png",
-    },
-    {
-      quote:
-        "Three months with Leadloom and I've stopped taking cold leads altogether. Every homeowner they've sent has been real, ready, and within my preferred project range.",
-      name: "Priya Desai",
-      role: "Independent interior consultant",
-      image: "/images/testimonial-priya.png",
-    },
-  ],
+  designers: {
+    eyebrow: "What designers say",
+    heading: "0 wasted trips since we started screening",
+    items: [
+      {
+        quote:
+          "What I liked most about LeadLoom is that the conversations start with clarity. Instead of spending time figuring out a client's budget or requirements from scratch, I get inquiries with useful details already in place. It makes the entire process feel more professional and helps me focus on creating great designs rather than chasing leads.",
+        name: "Shivani Suthar",
+        role: "Interior Designer, Pune",
+        image: "/images/shivani_suthar.png",
+      },
+      {
+        quote:
+          "As a designer, finding the right clients is often harder than designing the space itself. LeadLoom makes that process much smoother by connecting me with homeowners who are genuinely planning their interiors. The experience feels organized, transparent, and much more efficient than relying only on social media inquiries.",
+        name: "Sumit Andhere",
+        role: "Interior Designer, Pune",
+        image: "/images/sumit_andhere.png",
+      },
+      {
+        quote:
+          "I've worked with different lead sources before, but LeadLoom stands out because it feels built specifically for interior designers. The platform helps connect me with homeowners who already have a project in mind, which means discussions are more meaningful from the very first call. It's a practical approach that saves time and builds confidence.",
+        name: "Mayur Kashikar",
+        role: "Independent interior consultant",
+        image: "/images/mayur_kashikar.png",
+      },
+    ],
+  },
+  homeowners: {
+    eyebrow: "What homeowners say",
+    heading: "The right designer, without the endless search",
+    items: [
+      {
+        quote:
+          "We were overwhelmed choosing a designer for our 2 BHK in Baner. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
+        name: "Ankit Shelke",
+        role: "Homeowner, Bibwewadi",
+        image: "/images/ankit_shelke.png",
+      },
+      {
+        quote:
+          "I didn't want to interview ten studios. Leadloom sent one designer who actually fit our timeline and taste. The whole process felt calm and transparent.",
+        name: "Nilam Khaire",
+        role: "Homeowners,  Amanora Town Park",
+        image: "/images/nilam_khaire.png",
+      },
+      {
+        quote:
+          "As first-time renovators, we had no idea where to start. Leadloom helped us clarify our 3 BHK project before connecting us with a verified designer in Pune. It saved us weeks of guesswork.",
+        name: "Abhijeet Shinde",
+        role: "Homeowner, Hinjewadi",
+        image: "/images/abhijeet_shinde.png",
+      },
+    ],
+  },
 } as const;
 
 export const PUNE_NETWORK = {

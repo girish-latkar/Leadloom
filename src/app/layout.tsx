@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 
-import { SITE } from "@/lib/constants";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { getRootMetadata, getStructuredData } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -25,14 +26,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: SITE.title,
-  description: SITE.description,
-  icons: {
-    icon: [{ url: "/logo/logo-light.png", type: "image/png" }],
-    apple: "/logo/logo-light.png",
-  },
-};
+export const metadata: Metadata = getRootMetadata();
 
 /**
  * Applies a saved manual theme before first paint (prevents a
@@ -58,7 +52,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <JsonLd data={getStructuredData()} />
+        {children}
+      </body>
     </html>
   );
 }

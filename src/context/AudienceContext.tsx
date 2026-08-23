@@ -25,8 +25,11 @@ const DESIGNER_HASHES = new Set(["#qualify", "#network"]);
 
 export function AudienceProvider({ children }: { children: ReactNode }) {
   const [audience, setAudienceState] = useState<Audience>("homeowners");
+  const audienceRef = useRef(audience);
   const pendingScroll = useRef<string | null>(null);
   const isFirstRender = useRef(true);
+
+  audienceRef.current = audience;
 
   const setAudience = useCallback((next: Audience) => {
     setAudienceState(next);
@@ -34,6 +37,10 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
 
   const showDesigners = useCallback(() => setAudienceState("designers"), []);
   const showHomeowners = useCallback(() => setAudienceState("homeowners"), []);
+
+  function scrollToSection(id: string) {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   useEffect(() => {
     function onDocumentClick(e: MouseEvent) {
@@ -44,7 +51,14 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
 
       if (DESIGNER_HASHES.has(href)) {
         e.preventDefault();
-        pendingScroll.current = href.slice(1);
+        const targetId = href.slice(1);
+
+        if (audienceRef.current === "designers") {
+          scrollToSection(targetId);
+          return;
+        }
+
+        pendingScroll.current = targetId;
         setAudienceState("designers");
       }
     }
@@ -68,7 +82,7 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      document.getElementById(target)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollToSection(target);
     }, 80);
 
     return () => window.clearTimeout(timer);
