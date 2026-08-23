@@ -16,15 +16,20 @@ const OPTIONS: { value: Audience; label: string; accent: "teal" | "gold" }[] = [
 interface GetStartedModalProps {
   open: boolean;
   onClose: () => void;
+  initialAudience?: Audience;
 }
 
-export function GetStartedModal({ open, onClose }: GetStartedModalProps) {
+export function GetStartedModal({
+  open,
+  onClose,
+  initialAudience,
+}: GetStartedModalProps) {
   const { audience } = useAudience();
-  const [formAudience, setFormAudience] = useState<Audience>(audience);
+  const [formAudience, setFormAudience] = useState<Audience>(initialAudience ?? audience);
 
   useEffect(() => {
-    if (open) setFormAudience(audience);
-  }, [open, audience]);
+    if (open) setFormAudience(initialAudience ?? audience);
+  }, [open, audience, initialAudience]);
 
   const config = formAudience === "designers" ? DESIGNER_FORM : HOMEOWNER_FORM;
 

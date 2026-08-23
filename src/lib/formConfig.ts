@@ -11,6 +11,8 @@ export interface FieldConfig {
   options?: readonly string[];
   /** Placeholder-style first option for selects. */
   selectPrompt?: string;
+  /** Indian mobile: exactly 10 digits, starting with 6–9. */
+  phoneLocale?: "in";
 }
 
 /** Each row renders one field full-width or two fields side by side. */
@@ -43,7 +45,7 @@ export const DESIGNER_FORM: LeadFormConfig = {
     ],
     [
       { name: "email", label: "Email", type: "email", required: true, placeholder: "jordan@studio.com" },
-      { name: "phone", label: "Phone", type: "tel", placeholder: "(555) 000-0000" },
+      { name: "phone", label: "Phone", type: "tel", phoneLocale: "in", placeholder: "+91 98765 43210" },
     ],
     [
       { name: "city", label: "City / region served", type: "text", required: true, placeholder: "Austin, TX" },
@@ -63,7 +65,7 @@ export const DESIGNER_FORM: LeadFormConfig = {
         placeholder: "e.g. mid-century, coastal, full-home renovations",
       },
     ],
-    [{ name: "portfolio", label: "Google drive  portfolio link", type: "url", placeholder: "https://drive.google.com/..." }],
+    [{ name: "portfolio", label: "Google drive | portfolio link", type: "url", placeholder: "https://drive.google.com/..." }],
     [
       {
         name: "about",
@@ -95,20 +97,20 @@ export const HOMEOWNER_FORM: LeadFormConfig = {
       { name: "email", label: "Email", type: "email", required: true, placeholder: "priya@email.com" },
     ],
     [
-      { name: "phone", label: "Phone", type: "tel", placeholder: "+91 98765 43210" },
+      { name: "phone", label: "Phone", type: "tel", phoneLocale: "in", placeholder: "+91 98765 43210" },
       { name: "city", label: "City", type: "text", required: true, placeholder: "Pune" },
     ],
     [
       {
         name: "projectType",
-        label: "Project type",
+        label: "Property type",
         type: "select",
         options: PROJECT_TYPES,
         selectPrompt: "Select one",
       },
       {
         name: "timeline",
-        label: "Timeline",
+        label: "Possession",
         type: "select",
         options: TIMELINES,
         selectPrompt: "Select one",
@@ -152,7 +154,7 @@ export const INQUIRY_FORM: LeadFormConfig = {
   id: "inquiry-form",
   formId: "form-inquiry",
   accent: "teal",
-  tag: "Start your search",
+  tag: "Start your search  - Homeowners",
   heading: "Not sure if your project is ready? Let's talk it through.",
   sub: "Tell us a bit about your space and style. We'll confirm the details and connect you with one of our verified interior designers in Pune.",
   rows: [
@@ -160,7 +162,7 @@ export const INQUIRY_FORM: LeadFormConfig = {
       { name: "name", label: "Your name", type: "text", required: true, placeholder: "Your name" },
       { name: "email", label: "Email address", type: "email", required: true, placeholder: "you@email.com" },
     ],
-    [{ name: "phone", label: "Phone number", type: "tel", required: true, placeholder: "+91 98765 43210" }],
+    [{ name: "phone", label: "Phone number", type: "tel", required: true, phoneLocale: "in", placeholder: "+91 98765 43210" }],
     [
       {
         name: "projectType",
@@ -193,6 +195,6 @@ export const INQUIRY_FORM: LeadFormConfig = {
   finePrint: "We'll follow up within 2 business days to confirm your project details.",
   success: {
     title: "Inquiry sent",
-    body: "Thanks for reaching out. PriTam will review your details and get back to you within 2 business days.",
+    body: "Thanks for reaching out. We will review your details and get back to you within 2 business days.",
   },
 };

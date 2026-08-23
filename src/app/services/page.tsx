@@ -7,7 +7,7 @@ import { Services } from "@/components/sections/Services";
 export const metadata: Metadata = {
   title: `Services — ${SITE.name}`,
   description:
-    "Lead qualification for designers and verified designer matching for homeowners in Pune.",
+    "From designer matching to quote comparison — LeadLoom helps Pune homeowners find verified interior designers with full transparency, completely free.",
 };
 
 export default function ServicesPage() {

@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 import { PUNE_NETWORK } from "@/lib/constants";
-import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 
 export function PuneNetwork() {
@@ -23,9 +22,6 @@ export function PuneNetwork() {
             {PUNE_NETWORK.heading}
           </h2>
           <p className="mt-5 text-[16px] leading-[1.75] text-paper-dim">{PUNE_NETWORK.description}</p>
-          <Button href={PUNE_NETWORK.cta.href} variant="gold" className="mt-8 px-7 py-3.5">
-            {PUNE_NETWORK.cta.label}
-          </Button>
         </Reveal>
       </div>
     </section>

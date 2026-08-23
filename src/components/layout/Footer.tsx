@@ -4,6 +4,7 @@ import { FOOTER_LINKS, SITE } from "@/lib/constants";
 import { useFooterContact } from "@/context/FooterContactContext";
 import { ContactDetails } from "@/components/layout/ContactDetails";
 import { SocialLinks } from "@/components/layout/SocialLinks";
+import { Logo } from "@/components/ui/Logo";
 import { cn } from "@/lib/cn";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -12,8 +13,13 @@ export function Footer() {
 
   return (
     <footer id="footer" className="scroll-mt-[72px] border-t border-line pt-8 pb-6 max-sm:pt-7 max-sm:pb-5">
-      <Reveal className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-4 px-8 max-sm:px-5">
-        <SocialLinks />
+      <Reveal className="mx-auto flex max-w-[1180px] flex-wrap items-start justify-between gap-6 px-8 max-sm:px-5">
+        <div className="flex flex-col gap-4">
+          <a href="/" className="inline-flex no-underline transition-opacity duration-300 hover:opacity-85">
+            <Logo className="h-9 w-[136px] sm:h-10 sm:w-[152px]" />
+          </a>
+          <SocialLinks />
+        </div>
 
         <nav className="flex flex-wrap items-center gap-6" aria-label="Footer">
           {FOOTER_LINKS.map((link) => (

@@ -30,11 +30,18 @@ export function useScrollReveal<T extends HTMLElement>() {
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
+      { threshold: 0.08, rootMargin: "0px 0px 0px 0px" },
     );
 
     observer.observe(element);
-    return () => observer.disconnect();
+
+    // Fallback: never leave content hidden if the observer misses (mobile / LAN dev)
+    const fallback = window.setTimeout(() => setInView(true), 1200);
+
+    return () => {
+      window.clearTimeout(fallback);
+      observer.disconnect();
+    };
   }, []);
 
   return { ref, inView };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { cn } from "@/lib/cn";
 import type { LeadFormConfig } from "@/lib/formConfig";
@@ -8,8 +8,13 @@ import { Button } from "@/components/ui/Button";
 import { ThreadTag } from "@/components/ui/ThreadTag";
 import { SuccessCheckIcon } from "@/components/ui/icons";
 import { FormField } from "@/components/forms/FormField";
+import { TurnstileField } from "@/components/forms/TurnstileField";
+import { isTurnstileActive } from "@/lib/turnstile";
+import { validateField, validateFormFields } from "@/lib/validateFormFields";
 
 type Phase = "editing" | "submitting" | "fading" | "submitted";
+
+const GENERIC_ERROR = "Unable to submit your registration right now. Please try again.";
 
 interface LeadFormProps {
   config: LeadFormConfig;
@@ -19,32 +24,99 @@ interface LeadFormProps {
 
 export function LeadForm({ config, embedded = false }: LeadFormProps) {
   const [phase, setPhase] = useState<Phase>("editing");
-  const [errors, setErrors] = useState<Set<string>>(new Set());
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
+  const [turnstileRequired, setTurnstileRequired] = useState(false);
+
+  useEffect(() => {
+    setTurnstileRequired(isTurnstileActive());
+  }, []);
 
   const fieldId = (name: string) => `${config.formId}-${name}`;
+  const formFields = config.rows.flat();
+
+  function getFieldValue(name: string): string {
+    const form = formRef.current;
+    if (!form) return "";
+
+    const element = form.elements.namedItem(name);
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLSelectElement ||
+      element instanceof HTMLTextAreaElement
+    ) {
+      return element.value.trim();
+    }
+
+    return "";
+  }
+
+  function setFieldError(name: string, message: string | null) {
+    setErrors((current) => {
+      const next = { ...current };
+      if (message) next[name] = message;
+      else delete next[name];
+      return next;
+    });
+  }
+
+  function validateFieldByName(name: string): string | null {
+    const field = formFields.find((item) => item.name === name);
+    if (!field) return null;
+    return validateField(field, getFieldValue(name));
+  }
+
+  function handleFieldBlur(name: string) {
+    setTouched((current) => ({ ...current, [name]: true }));
+    setFieldError(name, validateFieldByName(name));
+  }
+
+  /** Re-validate touched fields as the user edits them. */
+  function handleFieldChange(event: FormEvent<HTMLFormElement>) {
+    const name = (event.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement).name;
+    if (!name || (!touched[name] && !errors[name])) return;
+    setFieldError(name, validateFieldByName(name));
+  }
+
+  function resetTurnstile() {
+    setTurnstileToken(null);
+    setTurnstileResetKey((current) => current + 1);
+  }
+
+  function handleTurnstileError() {
+    setTurnstileToken(null);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (phase === "submitting") return;
+
     const form = event.currentTarget;
     const data = new FormData(form);
 
-    const requiredFields = config.rows.flat().filter((field) => field.required);
-    const invalid = requiredFields
-      .filter((field) => !String(data.get(field.name) ?? "").trim())
-      .map((field) => field.name);
+    const values: Record<string, string> = {};
+    for (const field of formFields) {
+      values[field.name] = String(data.get(field.name) ?? "").trim();
+    }
 
-    if (invalid.length > 0) {
-      setErrors(new Set(invalid));
+    const fieldErrors = validateFormFields(formFields, values);
+    const invalidFields = Object.keys(fieldErrors);
+
+    if (invalidFields.length > 0) {
+      setTouched(Object.fromEntries(formFields.map((field) => [field.name, true])));
+      setErrors(fieldErrors);
       setSubmitError(null);
-      form.querySelector<HTMLElement>(`[name="${invalid[0]}"]`)?.focus();
+      form.querySelector<HTMLElement>(`[name="${invalidFields[0]}"]`)?.focus();
       return;
     }
 
-    const fields: Record<string, string> = {};
-    for (const field of config.rows.flat()) {
-      fields[field.name] = String(data.get(field.name) ?? "").trim();
+    if (turnstileRequired && !turnstileToken) {
+      setSubmitError(GENERIC_ERROR);
+      return;
     }
 
     setPhase("submitting");
@@ -56,41 +128,41 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           formId: config.formId,
-          fields,
+          fields: values,
           website: String(data.get("website") ?? ""),
+          turnstileToken,
         }),
       });
 
-      const result = (await response.json()) as { error?: string };
+      const result = (await response.json()) as { success?: boolean; message?: string };
 
-      if (!response.ok) {
-        throw new Error(result.error ?? "Unable to send your submission.");
+      if (!response.ok || !result.success) {
+        throw new Error(GENERIC_ERROR);
       }
 
       setPhase("fading");
       window.setTimeout(() => setPhase("submitted"), 350);
-    } catch (error) {
+    } catch {
       setPhase("editing");
-      setSubmitError(
-        error instanceof Error
-          ? error.message
-          : "Unable to send your submission. Please try again or call us directly.",
-      );
+      resetTurnstile();
+      setSubmitError(GENERIC_ERROR);
     }
   }
 
-  /** Clear a field's error state as the user types. */
-  function handleInput(event: FormEvent<HTMLFormElement>) {
-    const name = (event.target as HTMLInputElement).name;
-    if (!name || !errors.has(name)) return;
-    setErrors((current) => {
-      const next = new Set(current);
-      next.delete(name);
-      return next;
-    });
-  }
-
   const isSubmitting = phase === "submitting";
+
+  function renderFormField(field: (typeof formFields)[number]) {
+    return (
+      <FormField
+        key={field.name}
+        field={field}
+        accent={config.accent}
+        fieldId={fieldId(field.name)}
+        errorMessage={errors[field.name]}
+        onBlur={() => handleFieldBlur(field.name)}
+      />
+    );
+  }
 
   return (
     <div
@@ -119,7 +191,7 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
           id={config.formId}
           noValidate
           onSubmit={handleSubmit}
-          onInput={handleInput}
+          onChange={handleFieldChange}
           className={cn(
             "transition-opacity duration-[350ms]",
             phase === "fading" || isSubmitting ? "opacity-60" : "opacity-100",
@@ -138,26 +210,19 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
           {config.rows.map((row, rowIndex) =>
             row.length === 2 ? (
               <div key={rowIndex} className="grid grid-cols-2 gap-3.5 max-[480px]:grid-cols-1">
-                {row.map((field) => (
-                  <FormField
-                    key={field.name}
-                    field={field}
-                    accent={config.accent}
-                    fieldId={fieldId(field.name)}
-                    hasError={errors.has(field.name)}
-                  />
-                ))}
+                {row.map((field) => renderFormField(field))}
               </div>
             ) : (
-              <FormField
-                key={row[0].name}
-                field={row[0]}
-                accent={config.accent}
-                fieldId={fieldId(row[0].name)}
-                hasError={errors.has(row[0].name)}
-              />
+              renderFormField(row[0])
             ),
           )}
+
+          <TurnstileField
+            resetKey={turnstileResetKey}
+            onVerify={setTurnstileToken}
+            onExpire={resetTurnstile}
+            onError={handleTurnstileError}
+          />
 
           {submitError && (
             <p className="mt-4 rounded-md border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
@@ -168,7 +233,7 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
           <Button
             type="submit"
             variant={config.accent}
-            disabled={isSubmitting}
+            disabled={isSubmitting || (turnstileRequired && !turnstileToken)}
             className="mt-[26px] w-full p-[13px] text-[15px] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isSubmitting ? "Sending..." : config.submitLabel}

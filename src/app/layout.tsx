@@ -28,6 +28,10 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: SITE.title,
   description: SITE.description,
+  icons: {
+    icon: [{ url: "/logo/logo-light.png", type: "image/png" }],
+    apple: "/logo/logo-light.png",
+  },
 };
 
 /**

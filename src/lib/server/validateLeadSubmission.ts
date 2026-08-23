@@ -1,10 +1,7 @@
 import "server-only";
 
-import type { FieldConfig } from "@/lib/formConfig";
 import { getFormConfig, getFormFields } from "@/lib/forms/registry";
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_FIELD_LENGTH = 5000;
+import { EMAIL_PATTERN, validateField } from "@/lib/validateFormFields";
 
 export interface LeadSubmissionPayload {
   formId: string;
@@ -21,38 +18,6 @@ export interface ValidatedLeadSubmission {
 
 function trim(value: unknown): string {
   return String(value ?? "").trim();
-}
-
-function validateField(field: FieldConfig, rawValue: string): string | null {
-  const value = trim(rawValue);
-
-  if (field.required && !value) {
-    return `${field.label} is required.`;
-  }
-
-  if (!value) return null;
-
-  if (value.length > MAX_FIELD_LENGTH) {
-    return `${field.label} is too long.`;
-  }
-
-  if (field.type === "email" && !EMAIL_PATTERN.test(value)) {
-    return `${field.label} must be a valid email address.`;
-  }
-
-  if (field.type === "select" && field.options && !field.options.includes(value)) {
-    return `${field.label} has an invalid selection.`;
-  }
-
-  if (field.type === "url") {
-    try {
-      new URL(value);
-    } catch {
-      return `${field.label} must be a valid URL.`;
-    }
-  }
-
-  return null;
 }
 
 export function validateLeadSubmission(
@@ -102,7 +67,8 @@ export function validateLeadSubmission(
     }))
     .filter((field) => field.value);
 
-  const replyToEmail = normalized.email || undefined;
+  const replyToEmail =
+    normalized.email && EMAIL_PATTERN.test(normalized.email) ? normalized.email : undefined;
 
   return {
     ok: true,

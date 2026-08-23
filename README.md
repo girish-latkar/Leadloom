@@ -53,4 +53,77 @@ src/
 - **Theming** — the original CSS custom properties are kept as runtime tokens in `globals.css` and exposed to Tailwind via `@theme inline`, so utilities like `bg-ink`, `text-paper`, `border-line` respond to theme changes. Dark is default; light applies via system preference or `data-theme="light"`. An inline script in `layout.tsx` applies a saved manual theme before first paint to prevent flash.
 - **Fonts** — Fraunces, Inter, and JetBrains Mono are self-hosted via `next/font/google` (no render-blocking `<link>` tags) and wired into Tailwind's `font-display` / `font-sans` / `font-mono`.
 - **Animations** — keyframes (`fade-up`, `draw-line`, `node-pulse`, `shake`, `success-in`, `draw-check`) are registered in `@theme` and used as `animate-*` utilities. `prefers-reduced-motion` is respected globally and in the reveal hook.
-- **Forms** — both forms are driven by a single `LeadForm` component + config objects. Validation replicates the original (required-field check, error shake, focus first invalid, clear on input, fade-out into an animated success state). No backend is wired up yet — add an API route or server action in `LeadForm.handleSubmit`.
+- **Forms** — config-driven `LeadForm` component with client-side checks, honeypot field, optional Cloudflare Turnstile, and a server API at `/api/submit-lead`. Submissions are validated on the server, optionally rate-limited via Upstash Redis, and delivered to your inbox through Nodemailer over SMTP. See [Registration email delivery](#registration-email-delivery) below.
+
+## Registration email delivery
+
+Registration and lead forms submit to `POST /api/submit-lead`. The server validates input, verifies Turnstile when configured, applies rate limiting when Upstash is configured, and sends email through Nodemailer over SMTP/TLS.
+
+### Required environment variables
+
+```env
+SMTP_HOST=
+SMTP_PORT=
+SMTP_SECURE=
+SMTP_USER=
+SMTP_PASSWORD=
+REGISTRATION_FROM_EMAIL=Website Registration <registrations@yourdomain.com>
+REGISTRATION_TO_EMAIL=
+NEXT_PUBLIC_TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=
+```
+
+Optional (recommended for production rate limiting):
+
+```env
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+```
+
+Never use `NEXT_PUBLIC_` for secrets. SMTP credentials and the Turnstile secret key must remain server-side only.
+
+### Configure SMTP
+
+Obtain SMTP settings from your email provider (Google Workspace, Microsoft 365, Zoho, your host, etc.). Typical values:
+
+| Setting | SSL (implicit TLS) | STARTTLS |
+|---|---|---|
+| Port | `465` | `587` |
+| `SMTP_SECURE` | `true` | `false` |
+
+1. Set `SMTP_HOST` to your provider's SMTP hostname (e.g. `smtp.gmail.com`, `smtp.office365.com`).
+2. Set `SMTP_PORT` and `SMTP_SECURE` according to your provider's documentation.
+3. Set `SMTP_USER` and `SMTP_PASSWORD` to your SMTP login credentials (often an app-specific password).
+4. Set `REGISTRATION_FROM_EMAIL` to the sender address, for example `Website Registration <registrations@yourdomain.com>`.
+5. Set `REGISTRATION_TO_EMAIL` to the inbox that should receive submissions.
+
+**Deployment note:** Some hosting providers block outbound SMTP on ports 25, 465, or 587. If email fails in production but works locally, confirm your host allows outbound SMTP to your provider before changing the application architecture.
+
+### Configure Cloudflare Turnstile
+
+1. Create a Turnstile widget in the [Cloudflare dashboard](https://dash.cloudflare.com/).
+2. Add the **site key** as `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (public; used by the browser widget).
+3. Add the **secret key** as `TURNSTILE_SECRET_KEY` (server-only; never expose to the client).
+4. In production, both keys are required. In local development, submissions work without Turnstile if keys are omitted. Turnstile only loads on `localhost` / `127.0.0.1` in dev — if you open the site via a LAN IP (e.g. `192.168.x.x:3000`), the widget is skipped and submissions still work locally.
+
+### Configure rate limiting (recommended for production)
+
+1. Create a free [Upstash Redis](https://upstash.com/) database.
+2. Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to your environment.
+3. The API allows 5 submissions per IP every 10 minutes when Upstash is configured. Upstash is used only as a shared rate-limit counter store — registration data is not stored in Redis.
+
+### Test locally
+
+1. Copy `.env.example` to `.env.local` and fill in SMTP values.
+2. Run `npm run dev`.
+3. Submit a registration form on the site.
+4. Confirm the email arrives at `REGISTRATION_TO_EMAIL`.
+5. Test invalid email, missing required fields, HTML/script injection in message fields, and rapid duplicate clicks.
+
+### Deploy safely
+
+1. Add all production environment variables to your host (Vercel, etc.).
+2. Confirm outbound SMTP is allowed from your hosting environment.
+3. Configure Turnstile for your production domain.
+4. Configure Upstash for production rate limiting.
+5. Run `npm run build` before deploying.

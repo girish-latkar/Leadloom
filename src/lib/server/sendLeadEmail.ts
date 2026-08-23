@@ -1,77 +1,87 @@
 import "server-only";
 
-import nodemailer from "nodemailer";
-
+import { escapeHtml, sanitizeHeaderValue } from "@/lib/server/escapeHtml";
+import { getRegistrationEmailConfig } from "@/lib/server/emailConfig";
+import { getMailTransporter } from "@/lib/server/mailer";
 import type { ValidatedLeadSubmission } from "@/lib/server/validateLeadSubmission";
 
-function getEmailConfig() {
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-  const notifyEmail = process.env.LEAD_NOTIFY_EMAIL;
-  const port = Number(process.env.SMTP_PORT ?? "587");
-
-  if (!host || !user || !pass || !notifyEmail) {
-    throw new Error("Email delivery is not configured on the server.");
-  }
-
-  return { host, user, pass, notifyEmail, port };
+function formatSubmittedAt(date: Date): string {
+  return new Intl.DateTimeFormat("en-IN", {
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(date);
 }
 
-function buildEmailContent(submission: ValidatedLeadSubmission) {
-  const lines = submission.fields.map((field) => `${field.label}: ${field.value}`);
+function buildEmailContent(submission: ValidatedLeadSubmission, submittedAt: Date) {
+  const submittedLabel = formatSubmittedAt(submittedAt);
+
+  const textSections = submission.fields.map(
+    (field) => `${field.label}:\n${field.value}`,
+  );
+
   const text = [
-    `New Leadloom form submission`,
-    ``,
-    `Form: ${submission.formLabel} (${submission.formId})`,
-    ``,
-    ...lines,
-    ``,
-    `Submitted at: ${new Date().toISOString()}`,
+    "New Website Registration",
+    "",
+    `Form: ${submission.formLabel}`,
+    "",
+    ...textSections.flatMap((section) => [section, ""]),
+    `Submitted:\n${submittedLabel}`,
   ].join("\n");
 
+  const htmlRows = submission.fields
+    .map(
+      (field) => `
+        <tr>
+          <td style="padding:8px 12px 8px 0;font-weight:600;vertical-align:top;color:#111;">${escapeHtml(field.label)}</td>
+          <td style="padding:8px 0;vertical-align:top;color:#333;">${escapeHtml(field.value).replace(/\n/g, "<br>")}</td>
+        </tr>`,
+    )
+    .join("");
+
   const html = `
-    <h2>New Leadloom form submission</h2>
-    <p><strong>Form:</strong> ${submission.formLabel} (${submission.formId})</p>
-    <table cellpadding="6" cellspacing="0" style="border-collapse:collapse;">
-      ${submission.fields
-        .map(
-          (field) =>
-            `<tr><td style="font-weight:600;vertical-align:top;">${field.label}</td><td>${field.value.replace(/\n/g, "<br>")}</td></tr>`,
-        )
-        .join("")}
-    </table>
-    <p style="color:#666;font-size:12px;">Submitted at ${new Date().toISOString()}</p>
+    <div style="font-family:Arial,sans-serif;line-height:1.6;color:#111;">
+      <h2 style="margin:0 0 16px;font-size:20px;">New Website Registration</h2>
+      <p style="margin:0 0 16px;"><strong>Form:</strong> ${escapeHtml(submission.formLabel)}</p>
+      <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;width:100%;max-width:640px;">
+        ${htmlRows}
+        <tr>
+          <td style="padding:8px 12px 8px 0;font-weight:600;vertical-align:top;color:#111;">Submitted</td>
+          <td style="padding:8px 0;vertical-align:top;color:#333;">${escapeHtml(submittedLabel)}</td>
+        </tr>
+      </table>
+    </div>
   `;
 
   return { text, html };
 }
 
 export async function sendLeadEmail(submission: ValidatedLeadSubmission) {
-  const { host, user, pass, notifyEmail, port } = getEmailConfig();
+  const config = getRegistrationEmailConfig();
+  const transporter = getMailTransporter();
+  const submittedAt = new Date();
+  const { text, html } = buildEmailContent(submission, submittedAt);
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass },
-    ...(host.includes("gmail.com") && {
-      requireTLS: true,
-      tls: { minVersion: "TLSv1.2" },
-    }),
-  });
+  const subject = sanitizeHeaderValue(`New ${submission.formLabel} registration — Leadloom`);
+  const from = `${config.fromName} <${config.fromEmail}>`;
 
-  // Fail fast with a clear server log when credentials are wrong.
-  await transporter.verify();
+  try {
+    await transporter.sendMail({
+      from,
+      to: config.toEmail,
+      replyTo: submission.replyToEmail
+        ? sanitizeHeaderValue(submission.replyToEmail)
+        : undefined,
+      subject,
+      text,
+      html,
+    });
+  } catch (error) {
+    const code =
+      error && typeof error === "object" && "code" in error
+        ? String((error as { code: unknown }).code)
+        : "unknown";
 
-  const { text, html } = buildEmailContent(submission);
-
-  await transporter.sendMail({
-    from: `"Leadloom Forms" <${user}>`,
-    to: notifyEmail,
-    replyTo: submission.replyToEmail,
-    subject: `New ${submission.formLabel} submission — Leadloom`,
-    text,
-    html,
-  });
+    console.error("[registration-email] SMTP delivery failed.", { code });
+    throw new Error("Registration email failed.");
+  }
 }

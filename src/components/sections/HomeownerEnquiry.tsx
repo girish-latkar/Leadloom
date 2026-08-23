@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 
-import { DESIGNER_FORM } from "@/lib/formConfig";
+import { INQUIRY_FORM } from "@/lib/formConfig";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { LeadForm } from "@/components/forms/LeadForm";
 import { Reveal } from "@/components/ui/Reveal";
 
-export function DesignerJoin() {
+export function HomeownerEnquiry() {
   const [formOpen, setFormOpen] = useState(false);
 
   return (
@@ -21,17 +21,13 @@ export function DesignerJoin() {
             className="px-10 py-3.5 text-[15px]"
             onClick={() => setFormOpen(true)}
           >
-            Get started with Leadloom
+            Find Your Designer
           </Button>
         </Reveal>
       </div>
 
-      <Modal
-        open={formOpen}
-        onClose={() => setFormOpen(false)}
-        label="Designer application form"
-      >
-        <LeadForm key={formOpen ? "open" : "closed"} config={DESIGNER_FORM} embedded />
+      <Modal open={formOpen} onClose={() => setFormOpen(false)} label="Homeowner enquiry form">
+        <LeadForm key={formOpen ? "open" : "closed"} config={INQUIRY_FORM} embedded />
       </Modal>
     </section>
   );

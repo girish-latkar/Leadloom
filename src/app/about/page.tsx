@@ -7,7 +7,7 @@ import { About } from "@/components/sections/About";
 export const metadata: Metadata = {
   title: `About — ${SITE.name}`,
   description:
-    "Learn about LeadLoom's mission to connect homeowners with verified interior designers across India.",
+    "LeadLoom connects homeowners with verified interior designers in Pune — matched by budget, style, and location. No guesswork. No hidden costs.",
 };
 
 export default function AboutPage() {

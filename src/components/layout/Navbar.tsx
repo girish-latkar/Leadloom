@@ -8,10 +8,10 @@ import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { AudienceToggle } from "@/components/layout/AudienceToggle";
-import { GetStartedModal } from "@/components/layout/GetStartedModal";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { useAudience } from "@/context/AudienceContext";
 import { useFooterContact } from "@/context/FooterContactContext";
+import { useGetStarted } from "@/context/GetStartedContext";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -20,11 +20,11 @@ export function Navbar() {
   const { showContact } = useFooterContact();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [formOpen, setFormOpen] = useState(false);
+  const { openGetStarted } = useGetStarted();
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  function openGetStarted() {
-    setFormOpen(true);
+  function handleGetStarted() {
+    openGetStarted();
     setMobileOpen(false);
   }
 
@@ -94,7 +94,7 @@ export function Navbar() {
     <>
       <nav
         className={cn(
-          "sticky top-0 z-50 border-b border-line backdrop-blur-[12px]",
+          "sticky top-0 z-50 border-b border-line backdrop-blur-[22px] backdrop-saturate-150",
           "transition-[background-color,box-shadow] duration-[350ms] ease-in-out",
           scrolled ? "bg-(--nav-bg-scrolled) shadow-(--nav-shadow)" : "bg-(--nav-bg)",
         )}
@@ -140,7 +140,7 @@ export function Navbar() {
             <Button href={`tel:${SITE.phone}`} variant="ghost">
               Call now
             </Button>
-            <Button variant="gold" onClick={openGetStarted}>
+            <Button variant="gold" onClick={handleGetStarted}>
               Get started
             </Button>
           </div>
@@ -211,7 +211,16 @@ export function Navbar() {
       >
         {/* Drawer header */}
         <div className="flex h-[72px] items-center justify-between border-b border-line px-6">
-          <span className="font-display text-[17px] font-medium text-paper">Menu</span>
+          <a
+            href="/"
+            onClick={(event) => {
+              goHome(event);
+              setMobileOpen(false);
+            }}
+            className="inline-flex no-underline"
+          >
+            <Logo className="h-8 w-[120px]" />
+          </a>
           <button
             aria-label="Close menu"
             onClick={() => setMobileOpen(false)}
@@ -271,7 +280,7 @@ export function Navbar() {
           <Button href={`tel:${SITE.phone}`} variant="ghost" className="w-full justify-center">
             Call now
           </Button>
-          <Button variant="gold" className="w-full justify-center" onClick={openGetStarted}>
+          <Button variant="gold" className="w-full justify-center" onClick={handleGetStarted}>
             Get started
           </Button>
         </div>
@@ -284,7 +293,6 @@ export function Navbar() {
         </div>
       </div>
 
-      <GetStartedModal open={formOpen} onClose={() => setFormOpen(false)} />
     </>
   );
 }
