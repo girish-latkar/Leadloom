@@ -300,6 +300,12 @@
     scroll-behavior: auto;
   }
 
+  .animate-fade-up {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
   *,
   *::before,
   *::after {
