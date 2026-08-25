@@ -6,8 +6,8 @@ import { LeadQualification } from "@/components/sections/LeadQualification";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { PuneNetwork } from "@/components/sections/PuneNetwork";
 import { DesignerJoin } from "@/components/sections/DesignerJoin";
-import { HomeownerEnquiry } from "@/components/sections/HomeownerEnquiry";
 import { StartYourSearch } from "@/components/sections/StartYourSearch";
+import { Faq } from "@/components/sections/Faq";
 
 export function MainContent() {
   const { audience } = useAudience();
@@ -26,7 +26,7 @@ export function MainContent() {
         <>
           <Testimonials />
           <StartYourSearch />
-          <HomeownerEnquiry />
+          <Faq />
         </>
       )}
     </>

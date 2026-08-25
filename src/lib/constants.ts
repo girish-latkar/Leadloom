@@ -8,7 +8,7 @@ export const SITE = {
   title: "Leadloom — Verified interior design leads in Pune",
   description:
     "Leadloom connects homeowners with verified interior designers in Pune. We qualify every lead so designers only meet projects that fit.",
-  email: "leadloomconnect@gmail.comm",
+  email: "leadloomconnect@gmail.com",
   phone: "+919552970123",
   location: "Pune, Maharashtra",
   address: "Pune, Maharashtra, India",
@@ -35,16 +35,76 @@ export const NAV_LINKS = [
   { href: "#contact", label: "Contact", audience: "homeowners" as const },
 ] as const;
 
+export const CTA = {
+  primaryLabel: "Get matched free",
+  navLabel: "Get matched",
+  reassurance: "Takes 60 seconds · No cost · No obligation to hire",
+  secondaryLabel: "See how it works →",
+  secondaryHref: "/services#how-it-works",
+  designerLabel: "Apply as a designer",
+  navDesignerLabel: "Apply",
+  responseTime: "We respond within 24 hours",
+} as const;
+
+export const SOCIAL_PROOF = {
+  stat: "48",
+  label: "verified designers in Pune",
+} as const;
+
+export const PUNE_AREAS = [
+  "Baner",
+  "Aundh",
+  "Koregaon Park",
+  "Hinjewadi",
+  "Wakad",
+  "Kothrud",
+  "Hadapsar",
+  "Bibwewadi",
+  "Other",
+] as const;
+
+export const FAQ = [
+  {
+    question: "Is it really free?",
+    answer:
+      "Yes — completely free for homeowners. No registration fees, consultation charges, or hidden costs. You only pay a designer if you choose to hire them.",
+  },
+  {
+    question: "How fast do I hear back?",
+    answer:
+      "We respond within 24 hours with one or two designer introductions matched to your project, budget, and style.",
+  },
+  {
+    question: "What if I don't like the match?",
+    answer:
+      "Tell us what didn't fit — style, budget, or timeline — and we'll refine the search. There's no obligation to hire anyone we introduce.",
+  },
+  {
+    question: "How do you verify designers?",
+    answer:
+      "Every designer passes business identity checks, portfolio review, background verification, and is matched by location and specialization before joining our network.",
+  },
+  {
+    question: "What areas in Pune do you cover?",
+    answer:
+      "We match homeowners across Pune — Baner, Aundh, Koregaon Park, Hinjewadi, Wakad, Kothrud, Hadapsar, and surrounding neighbourhoods.",
+  },
+  {
+    question: "Do I have to fill a long form?",
+    answer:
+      "No — share your name, phone, area, and project type in under a minute. We follow up to confirm the rest.",
+  },
+] as const;
+
 export const HERO = {
-  eyebrow: "Home design matched",
+  eyebrow: "Verified interior designers, matched to you — Pune.",
   heading: "A real living room makes clearer decisions than a mood board ever will.",
   description:
-    "We qualify homeowner leads in Pune so you only walk into projects that actually fit your style and budget.",
+    "Share your project once. We match you to vetted designers whose portfolio and pricing genuinely fit — no cold calls, no directory scrolling.",
   image: {
     src: "/images/hero-living-room.png",
     alt: "Interior designer placing a fabric swatch in a sunlit Pune living room",
   },
-  ctas: [{ href: "#qualify", label: "See how we match", variant: "teal" as const }],
 } as const;
 
 export const BUDGET_RANGES = [
@@ -64,7 +124,7 @@ export const LEAD_QUALIFICATION = {
   heading: "We don't send you every lead that walks in",
   description:
     "Most lead services flood your inbox. We screen every homeowner in Pune so you only meet the ones ready to move forward with a designer.",
-  cta: { href: "#contact", label: "See how we qualify" },
+  cta: { href: "#how-it-works", label: "See how it works →" },
   image: {
     src: "/images/qualify-woman-desk.png",
     alt: "Woman reviewing a lead qualification document at a desk with a potted plant",
@@ -140,13 +200,15 @@ export const TESTIMONIALS = {
           "We were overwhelmed choosing a designer for our 2 BHK in Baner. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
         name: "Ankit Shelke",
         role: "Homeowner, Bibwewadi",
+        tag: "2 BHK · Baner",
         image: "/images/ankit_shelke.png",
       },
       {
         quote:
           "I didn't want to interview ten studios. Leadloom sent one designer who actually fit our timeline and taste. The whole process felt calm and transparent.",
         name: "Nilam Khaire",
-        role: "Homeowners,  Amanora Town Park",
+        role: "Homeowner, Amanora Town Park",
+        tag: "2 BHK · Amanora",
         image: "/images/nilam_khaire.png",
       },
       {
@@ -154,6 +216,7 @@ export const TESTIMONIALS = {
           "As first-time renovators, we had no idea where to start. Leadloom helped us clarify our 3 BHK project before connecting us with a verified designer in Pune. It saved us weeks of guesswork.",
         name: "Abhijeet Shinde",
         role: "Homeowner, Hinjewadi",
+        tag: "3 BHK · Hinjewadi",
         image: "/images/abhijeet_shinde.png",
       },
     ],
@@ -170,23 +233,26 @@ export const PUNE_NETWORK = {
   },
 } as const;
 
+export const FOUNDER = {
+  name: "Pritam",
+  role: "Founder, Leadloom",
+  story:
+    "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. We check the fit first — budget, style, timeline — before anyone gets your number.",
+  image: {
+    src: "/images/about.png",
+    alt: "Pritam, founder of Leadloom",
+  },
+} as const;
+
 export const ABOUT = {
   eyebrow: "About Leadloom",
   tagline: "India's trusted platform",
   heading: "Your Dream Home Deserves the Right Designer",
   description:
-    "Buying a home is one of life's biggest milestones. LeadLoom makes the next step — finding the right interior designer — just as meaningful. We connect homeowners with verified professionals based on project requirements, budget, style, and location.",
+    "Buying a home is one of life's biggest milestones. Leadloom makes the next step — finding the right interior designer — just as meaningful. We connect homeowners with verified professionals based on project requirements, budget, style, and location.",
   image: {
     src: "/images/about-designers.png",
     alt: "Interior designers reviewing blueprints and design materials together",
-  },
-  mission: {
-    title: "Our Mission",
-    body: "Make the interior design journey transparent, reliable, and stress-free.",
-  },
-  vision: {
-    title: "Our Vision",
-    body: "Become India's most trusted platform for verified interior design professionals.",
   },
   verification: {
     eyebrow: "Why Leadloom",
@@ -196,19 +262,35 @@ export const ABOUT = {
     pillars: [
       {
         title: "Business & identity",
-        body: "Registration, GST, and identity verification",
+        body: "Registration, GST, and identity verification before any designer joins the network.",
+        image: {
+          src: "/images/qualify-woman-desk.png",
+          alt: "Business verification documents on a desk",
+        },
       },
       {
         title: "Quality & background",
-        body: "Portfolio review and background checks",
+        body: "Portfolio review and background checks — we look at the work, not just the pitch deck.",
+        image: {
+          src: "/images/studio.png",
+          alt: "Interior design studio with material samples",
+        },
       },
       {
         title: "Experience & portfolio",
-        body: "Previous projects, client reviews, and credentials",
+        body: "Previous projects, client reviews, and credentials reviewed by our team in Pune.",
+        image: {
+          src: "/images/hero-living-room.png",
+          alt: "Completed living room interior project",
+        },
       },
       {
         title: "Location & specialization",
-        body: "Matched by city, property type, and design style",
+        body: "Matched by city, property type, and design style — not just whoever paid for a listing.",
+        image: {
+          src: "/images/inquiry-homeowner.png",
+          alt: "Homeowner discussing design plans in Pune",
+        },
       },
     ],
   },
@@ -289,27 +371,14 @@ export const SERVICES = {
     ],
   },
   benefits: {
-    eyebrow: "Benefits",
-    heading: "Everything you get, completely free",
+    headline: "₹0 to use Leadloom, ever",
     description:
-      "LeadLoom is free for homeowners — no registration charges, no consultation fees, no hidden costs, and no obligation to hire.",
+      "Leadloom is free for homeowners — no registration charges, no consultation fees, no hidden costs, and no obligation to hire.",
     items: [
-      {
-        title: "Zero cost",
-        body: "No registration fees, subscription, or hidden charges — ever",
-      },
-      {
-        title: "Saves time",
-        body: "Skip weeks of research — we match you with suitable designers instantly",
-      },
-      {
-        title: "Reduce risk",
-        body: "Avoid unverified contractors and unreliable service",
-      },
-      {
-        title: "Trusted designers",
-        body: "Background-verified professionals with proven track records",
-      },
+      "No registration fees, subscription, or hidden charges — ever",
+      "Skip weeks of research — we match you with suitable designers quickly",
+      "Avoid unverified contractors and unreliable service",
+      "Background-verified professionals with proven track records",
     ],
   },
 } as const;
@@ -381,12 +450,12 @@ export const HOMEOWNER_PANEL = {
     "One thoughtful introduction, not ten unsolicited calls",
     "Free for homeowners, always",
   ],
-  cta: { href: "#homeowner-form", label: "Find my designer" },
+  cta: { href: "#homeowner-form", label: "Get matched free" },
 } as const;
 
 export const FOOTER_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
-  { href: "#contact", label: "Contact" },
+  { href: "#contact", label: "Contact Us" },
 ] as const;

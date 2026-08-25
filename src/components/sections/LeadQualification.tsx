@@ -1,7 +1,6 @@
 import Image from "next/image";
 
-import { LEAD_QUALIFICATION } from "@/lib/constants";
-import { Button } from "@/components/ui/Button";
+import { LEAD_QUALIFICATION, CTA } from "@/lib/constants";
 import { Reveal } from "@/components/ui/Reveal";
 
 export function LeadQualification() {
@@ -22,13 +21,12 @@ export function LeadQualification() {
             <p className="text-[16px] leading-[1.75] text-paper-dim">
               {LEAD_QUALIFICATION.description}
             </p>
-            <Button
-              href={LEAD_QUALIFICATION.cta.href}
-              variant="ghost"
-              className="mt-7 border-line px-6 py-3 text-[14px]"
+            <a
+              href={CTA.secondaryHref}
+              className="mt-7 inline-flex text-sm font-medium text-paper-dim no-underline transition-colors hover:text-paper"
             >
-              {LEAD_QUALIFICATION.cta.label}
-            </Button>
+              {CTA.secondaryLabel}
+            </a>
           </Reveal>
         </div>
 

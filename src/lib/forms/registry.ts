@@ -1,9 +1,10 @@
-import { DESIGNER_FORM, HOMEOWNER_FORM, INQUIRY_FORM, type LeadFormConfig } from "@/lib/formConfig";
+import { DESIGNER_FORM, HOMEOWNER_FORM, INQUIRY_FORM, INTAKE_FORM, type LeadFormConfig } from "@/lib/formConfig";
 
 export const FORM_BY_ID: Record<string, LeadFormConfig> = {
   [DESIGNER_FORM.formId]: DESIGNER_FORM,
   [HOMEOWNER_FORM.formId]: HOMEOWNER_FORM,
   [INQUIRY_FORM.formId]: INQUIRY_FORM,
+  [INTAKE_FORM.formId]: INTAKE_FORM,
 };
 
 export function getFormConfig(formId: string): LeadFormConfig | undefined {

@@ -1,11 +1,14 @@
+"use client";
+
 import Image from "next/image";
 
 import { START_YOUR_SEARCH } from "@/lib/constants";
+import { GetMatchedButton } from "@/components/ui/GetMatchedButton";
 import { Reveal } from "@/components/ui/Reveal";
 
 export function StartYourSearch() {
   return (
-    <section id="start-search" className="scroll-mt-[72px] py-[100px] max-sm:py-16">
+    <section id="start-search" className="scroll-mt-[72px] py-24 max-sm:py-20">
       <div className="mx-auto max-w-[1180px] px-8 max-sm:px-5">
         <div className="grid grid-cols-2 items-center gap-14 max-[900px]:grid-cols-1 max-[900px]:gap-10">
           <Reveal>
@@ -18,6 +21,15 @@ export function StartYourSearch() {
             <p className="mt-4 max-w-[480px] text-base leading-relaxed text-paper-dim">
               {START_YOUR_SEARCH.description}
             </p>
+            <div className="mt-8 w-full max-sm:mt-6">
+              <GetMatchedButton
+                variant="teal"
+                fullWidth
+                className="justify-center px-8 py-3.5 text-[15px] sm:w-auto sm:px-8"
+                showReassurance
+                forceHomeowner
+              />
+            </div>
           </Reveal>
 
           <Reveal delay={0.12} className="relative aspect-[4/3] overflow-hidden rounded-md">

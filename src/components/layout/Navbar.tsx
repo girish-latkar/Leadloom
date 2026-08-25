@@ -5,13 +5,27 @@ import { usePathname } from "next/navigation";
 
 import { NAV_LINKS, SITE } from "@/lib/constants";
 import { cn } from "@/lib/cn";
-import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { AudienceToggle } from "@/components/layout/AudienceToggle";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { GetMatchedButton } from "@/components/ui/GetMatchedButton";
+import { Button } from "@/components/ui/Button";
 import { useAudience } from "@/context/AudienceContext";
 import { useFooterContact } from "@/context/FooterContactContext";
-import { useGetStarted } from "@/context/GetStartedContext";
+
+function PhoneIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M6.6 10.8a15.9 15.9 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8z"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 export function Navbar() {
   const pathname = usePathname();
@@ -20,13 +34,7 @@ export function Navbar() {
   const { showContact } = useFooterContact();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { openGetStarted } = useGetStarted();
   const drawerRef = useRef<HTMLDivElement>(null);
-
-  function handleGetStarted() {
-    openGetStarted();
-    setMobileOpen(false);
-  }
 
   function goHome(event: ReactMouseEvent<HTMLAnchorElement>) {
     if (!isHome) return;
@@ -52,7 +60,6 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menu when footer contact is toggled
   useEffect(() => {
     function onContactToggle() {
       setMobileOpen(false);
@@ -61,7 +68,6 @@ export function Navbar() {
     return () => window.removeEventListener("leadloom:contact-toggle", onContactToggle);
   }, []);
 
-  // Close menu on route/hash change
   useEffect(() => {
     function onHashChange() {
       setMobileOpen(false);
@@ -70,7 +76,6 @@ export function Navbar() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  // Close on outside click
   useEffect(() => {
     if (!mobileOpen) return;
     function onOutsideClick(e: MouseEvent) {
@@ -82,7 +87,6 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", onOutsideClick);
   }, [mobileOpen]);
 
-  // Prevent body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
@@ -99,18 +103,22 @@ export function Navbar() {
           scrolled ? "bg-(--nav-bg-scrolled) shadow-(--nav-shadow)" : "bg-(--nav-bg)",
         )}
       >
-        <div className="mx-auto flex h-[72px] max-w-[1180px] items-center justify-between px-8 max-sm:px-5">
-          {/* Logo */}
-          <a
-            href="/"
-            onClick={goHome}
-            className="group flex items-center no-underline"
-          >
-            <Logo className="transition-opacity duration-300 group-hover:opacity-85" />
+        <div
+          className={cn(
+            "mx-auto grid max-w-[1180px] grid-cols-[auto_1fr_auto] items-center gap-6 px-8 transition-[height] duration-300 max-sm:gap-4 max-sm:px-5 max-[820px]:grid-cols-[auto_auto]",
+            scrolled ? "h-[60px]" : "h-[72px]",
+          )}
+        >
+          <a href="/" onClick={goHome} className="group flex items-center no-underline">
+            <Logo
+              className={cn(
+                "transition-all duration-300 group-hover:opacity-85",
+                scrolled ? "h-8 w-[120px]" : "h-9 w-[136px]",
+              )}
+            />
           </a>
 
-          {/* Desktop nav links + audience toggle */}
-          <div className="flex items-center gap-6 max-[820px]:hidden">
+          <div className="hidden min-[821px]:flex items-center justify-center gap-8">
             <div className="flex items-center gap-7 text-sm text-grey">
               {NAV_LINKS.map((link) => (
                 <a
@@ -118,7 +126,7 @@ export function Navbar() {
                   href={link.href}
                   onClick={link.href === "/" ? goHome : undefined}
                   className={cn(
-                    "relative no-underline transition-colors duration-250 hover:text-paper",
+                    "relative whitespace-nowrap no-underline transition-colors duration-250 hover:text-paper",
                     "after:absolute after:-bottom-[5px] after:left-0 after:h-px after:w-full",
                     "after:origin-right after:scale-x-0 after:bg-gold",
                     "after:transition-transform after:duration-[350ms] after:ease-out-loom",
@@ -131,59 +139,64 @@ export function Navbar() {
                 </a>
               ))}
             </div>
-            {isHome && <AudienceToggle />}
+            {isHome && <AudienceToggle className="shrink-0" />}
           </div>
 
-          {/* Desktop CTAs */}
-          <div className="flex items-center gap-2.5 max-[820px]:hidden">
-            <ThemeToggle />
-            <Button href={`tel:${SITE.phone}`} variant="ghost">
-              Call now
-            </Button>
-            <Button variant="gold" onClick={handleGetStarted}>
-              Get started
-            </Button>
-          </div>
+          <div className="flex items-center justify-end gap-3 max-[820px]:col-start-2">
+            <div className="hidden items-center gap-3 min-[821px]:flex">
+              <ThemeToggle />
+              <a
+                href={`tel:${SITE.phone}`}
+                aria-label="Call Leadloom"
+                className={cn(
+                  "flex size-[38px] shrink-0 items-center justify-center rounded-full border border-line text-grey",
+                  "transition-[border-color,background-color,transform] duration-200 ease-out-loom",
+                  "hover:-translate-y-px hover:border-grey hover:bg-(--btn-outline-hover-bg) hover:text-paper",
+                )}
+              >
+                <PhoneIcon />
+              </a>
+              <GetMatchedButton variant="teal" compact className="shrink-0" />
+            </div>
 
-          {/* Mobile: theme toggle + hamburger */}
-          <div className="hidden items-center gap-3 max-[820px]:flex">
-            <ThemeToggle />
-            <button
-              id="mobile-menu-toggle"
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              aria-expanded={mobileOpen}
-              aria-controls="mobile-drawer"
-              onClick={() => setMobileOpen((v) => !v)}
-              className={cn(
-                "relative flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-md",
-                "transition-colors duration-200 hover:bg-(--btn-outline-hover-bg)",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40",
-              )}
-            >
-              <span
+            <div className="hidden items-center gap-3 max-[820px]:flex">
+              <ThemeToggle />
+              <button
+                id="mobile-menu-toggle"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileOpen}
+                aria-controls="mobile-drawer"
+                onClick={() => setMobileOpen((v) => !v)}
                 className={cn(
-                  "block h-[1.5px] w-5 rounded-full bg-paper transition-all duration-300 ease-out-loom",
-                  mobileOpen && "translate-y-[6.5px] rotate-45",
+                  "relative flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-md",
+                  "transition-colors duration-200 hover:bg-(--btn-outline-hover-bg)",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/40",
                 )}
-              />
-              <span
-                className={cn(
-                  "block h-[1.5px] w-5 rounded-full bg-paper transition-all duration-300 ease-out-loom",
-                  mobileOpen && "scale-x-0 opacity-0",
-                )}
-              />
-              <span
-                className={cn(
-                  "block h-[1.5px] w-5 rounded-full bg-paper transition-all duration-300 ease-out-loom",
-                  mobileOpen && "-translate-y-[6.5px] -rotate-45",
-                )}
-              />
-            </button>
+              >
+                <span
+                  className={cn(
+                    "block h-[1.5px] w-5 rounded-full bg-paper transition-all duration-300 ease-out-loom",
+                    mobileOpen && "translate-y-[6.5px] rotate-45",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "block h-[1.5px] w-5 rounded-full bg-paper transition-all duration-300 ease-out-loom",
+                    mobileOpen && "scale-x-0 opacity-0",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "block h-[1.5px] w-5 rounded-full bg-paper transition-all duration-300 ease-out-loom",
+                    mobileOpen && "-translate-y-[6.5px] -rotate-45",
+                  )}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile overlay */}
       <div
         aria-hidden="true"
         onClick={() => setMobileOpen(false)}
@@ -194,7 +207,6 @@ export function Navbar() {
         )}
       />
 
-      {/* Mobile drawer */}
       <div
         id="mobile-drawer"
         ref={drawerRef}
@@ -209,7 +221,6 @@ export function Navbar() {
           mobileOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        {/* Drawer header */}
         <div className="flex h-[72px] items-center justify-between border-b border-line px-6">
           <a
             href="/"
@@ -227,24 +238,17 @@ export function Navbar() {
             className="flex h-9 w-9 items-center justify-center rounded-md text-grey transition-colors hover:bg-(--btn-outline-hover-bg) hover:text-paper"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path
-                d="M2 2L14 14M14 2L2 14"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
+              <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
         </div>
 
-        {/* Audience toggle — homepage only */}
         {isHome && (
           <div className="px-4 pt-5">
             <AudienceToggle variant="stacked" />
           </div>
         )}
 
-        {/* Nav links */}
         <nav className={cn("flex flex-col gap-1 px-4", isHome ? "pt-4" : "pt-5")} aria-label="Mobile navigation">
           {NAV_LINKS.map((link, i) => (
             <a
@@ -259,40 +263,39 @@ export function Navbar() {
               }}
               style={{ transitionDelay: mobileOpen ? `${i * 60 + 80}ms` : "0ms" }}
               className={cn(
-                "group flex items-center gap-3 rounded-lg px-3 py-3.5 text-[15px] font-medium text-grey no-underline",
+                "flex w-full items-center justify-center rounded-lg px-3 py-3.5 text-center text-[15px] font-medium text-grey no-underline",
                 "transition-all duration-300 ease-out-loom hover:bg-(--btn-outline-hover-bg) hover:text-paper",
                 mobileOpen ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0",
                 link.href === "#contact" && showContact && "text-gold",
               )}
             >
-              {/* Gold accent dot */}
-              <span className="h-[5px] w-[5px] rounded-full bg-gold opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
               {link.label}
             </a>
           ))}
         </nav>
 
-        {/* Gold divider */}
         <div className="mx-4 mt-6 h-px bg-linear-to-r from-gold/40 via-gold/20 to-transparent" />
 
-        {/* CTA buttons */}
         <div className="flex flex-col gap-3 px-4 pt-6">
-          <Button href={`tel:${SITE.phone}`} variant="ghost" className="w-full justify-center">
-            Call now
+          <Button
+            href={`tel:${SITE.phone}`}
+            variant="ghost"
+            className="w-full justify-center px-5 hover:translate-y-0 active:translate-y-0"
+          >
+            <PhoneIcon />
+            Call
           </Button>
-          <Button variant="gold" className="w-full justify-center" onClick={handleGetStarted}>
-            Get started
-          </Button>
+          <GetMatchedButton
+            variant="teal"
+            className="w-full justify-center"
+            onOpen={() => setMobileOpen(false)}
+          />
         </div>
 
-        {/* Bottom brand accent */}
-        <div className="mt-auto border-t border-line px-6 pb-8 pt-6">
-          <p className="text-[12px] leading-relaxed text-grey">
-            Verified leads for Pune interior designers.
-          </p>
+        <div className="mt-auto border-t border-line px-6 pt-6 pb-8">
+          <p className="text-[12px] leading-relaxed text-grey">Verified interior designers in Pune.</p>
         </div>
       </div>
-
     </>
   );
 }

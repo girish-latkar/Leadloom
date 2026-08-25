@@ -6,7 +6,7 @@ export type ButtonVariant = "gold" | "teal" | "ghost";
 
 const BASE_CLASSES = cn(
   "relative inline-flex cursor-pointer items-center justify-center gap-2 overflow-hidden",
-  "rounded-[3px] border border-transparent px-5 py-[11px] font-sans text-sm font-semibold no-underline",
+  "rounded-[3px] border px-5 py-[11px] font-sans text-sm font-semibold no-underline",
   "transition-[transform,background-color,border-color,color,box-shadow] duration-200 ease-out-loom",
   "hover:-translate-y-0.5 active:translate-y-px",
   "focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-paper",
@@ -15,12 +15,12 @@ const BASE_CLASSES = cn(
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   // gold — designer actions
   gold: cn(
-    "bg-(--btn-gold-bg) text-(--btn-gold-text)",
+    "border-transparent bg-(--btn-gold-bg) text-(--btn-gold-text)",
     "hover:bg-(--btn-gold-bg-hover) hover:shadow-[0_6px_22px_rgba(182,137,63,0.28)]",
   ),
   // teal — homeowner actions
   teal: cn(
-    "bg-(--btn-teal-bg) text-(--btn-teal-text)",
+    "border-transparent bg-(--btn-teal-bg) text-(--btn-teal-text)",
     "hover:bg-(--btn-teal-bg-hover) hover:shadow-[0_6px_22px_rgba(63,100,97,0.32)]",
   ),
   // ghost — quiet nav action

@@ -169,12 +169,13 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
       id={config.id}
       className={cn(
         "scroll-mt-[100px] rounded-md border border-line bg-ink-card p-10 max-sm:px-[22px] max-sm:py-7",
+        embedded && "rounded-none border-0 bg-transparent p-6 max-sm:px-5 max-sm:py-5",
         !embedded &&
           "transition-[border-color,box-shadow,transform] duration-[350ms] ease-out-loom hover:-translate-y-[3px] hover:border-line-strong hover:shadow-(--card-shadow)",
       )}
     >
       <ThreadTag color={config.accent}>{config.tag}</ThreadTag>
-      <h3 className="mt-4 font-display text-2xl font-medium tracking-[-0.01em]">
+      <h3 className="mt-4 font-display text-2xl font-medium tracking-[-0.01em] max-sm:text-xl">
         {config.heading}
       </h3>
       <p className="mt-2.5 text-sm leading-[1.55] text-grey">{config.sub}</p>

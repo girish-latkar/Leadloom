@@ -1,4 +1,4 @@
-import { BUDGET_RANGES, PROJECT_TYPES, TIMELINES } from "@/lib/constants";
+import { BUDGET_RANGES, PROJECT_TYPES, PUNE_AREAS, TIMELINES } from "@/lib/constants";
 
 export type FieldType = "text" | "email" | "tel" | "url" | "select" | "textarea";
 
@@ -30,6 +30,54 @@ export interface LeadFormConfig {
   finePrint: string;
   success: { title: string; body: string };
 }
+
+export const INTAKE_FORM: LeadFormConfig = {
+  id: "intake-form",
+  formId: "form-intake",
+  accent: "teal",
+  tag: "Get matched",
+  heading: "Tell us about your project",
+  sub: "Three quick fields — we'll follow up within 24 hours with a designer match.",
+  rows: [
+    [{ name: "name", label: "Your name", type: "text", required: true, placeholder: "Priya Shah" }],
+    [
+      {
+        name: "phone",
+        label: "Phone / WhatsApp",
+        type: "tel",
+        required: true,
+        phoneLocale: "in",
+        placeholder: "+91 98765 43210",
+      },
+    ],
+    [
+      {
+        name: "area",
+        label: "Area in Pune",
+        type: "select",
+        required: true,
+        options: PUNE_AREAS,
+        selectPrompt: "Select area",
+      },
+    ],
+    [
+      {
+        name: "projectType",
+        label: "Project type",
+        type: "select",
+        required: true,
+        options: PROJECT_TYPES,
+        selectPrompt: "Select one",
+      },
+    ],
+  ],
+  submitLabel: "Get matched free",
+  finePrint: "Always free for homeowners. No obligation to hire.",
+  success: {
+    title: "Request received",
+    body: "We're finding your match now. Expect to hear from us within 24 hours.",
+  },
+};
 
 export const DESIGNER_FORM: LeadFormConfig = {
   id: "designer-form",
@@ -142,7 +190,7 @@ export const HOMEOWNER_FORM: LeadFormConfig = {
       },
     ],
   ],
-  submitLabel: "Get matched",
+  submitLabel: "Get matched free",
   finePrint: "Always free for homeowners. We'll follow up within 2 business days with your match.",
   success: {
     title: "Request received",
