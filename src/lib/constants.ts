@@ -197,10 +197,10 @@ export const TESTIMONIALS = {
     items: [
       {
         quote:
-          "We were overwhelmed choosing a designer for our 2 BHK in Baner. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
+          "We were overwhelmed choosing a designer for our bunglow in Bibavewadi. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
         name: "Ankit Shelke",
         role: "Homeowner, Bibwewadi",
-        tag: "2 BHK · Baner",
+        tag: "Bungalow · Bibavewadi",
         image: "/images/ankit_shelke.png",
       },
       {
@@ -215,8 +215,8 @@ export const TESTIMONIALS = {
         quote:
           "As first-time renovators, we had no idea where to start. Leadloom helped us clarify our 3 BHK project before connecting us with a verified designer in Pune. It saved us weeks of guesswork.",
         name: "Abhijeet Shinde",
-        role: "Homeowner, Hinjewadi",
-        tag: "3 BHK · Hinjewadi",
+        role: "Homeowner, Hadapsar",
+        tag: "3 BHK · Hadapsar",
         image: "/images/abhijeet_shinde.png",
       },
     ],
@@ -228,8 +228,8 @@ export const PUNE_NETWORK = {
   description:
     "We screen every lead so you only spend time on projects that are the right fit. No spam, just serious homeowners in Pune.",
   image: {
-    src: "/images/studio.png",
-    alt: "A bright interior design studio with fabric samples, blueprints, and a large wooden table",
+    src: "/images/pune-network.png",
+    alt: "Interior designers collaborating in a bright Pune studio",
   },
 } as const;
 
@@ -239,7 +239,7 @@ export const FOUNDER = {
   story:
     "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. We check the fit first — budget, style, timeline — before anyone gets your number.",
   image: {
-    src: "/images/about.png",
+    src: "/images/founder-portrait.png",
     alt: "Pritam, founder of Leadloom",
   },
 } as const;
@@ -264,32 +264,32 @@ export const ABOUT = {
         title: "Business & identity",
         body: "Registration, GST, and identity verification before any designer joins the network.",
         image: {
-          src: "/images/qualify-woman-desk.png",
-          alt: "Business verification documents on a desk",
+          src: "/images/qualify-phone-desk.png",
+          alt: "Designer reviewing verification documents at a desk",
         },
       },
       {
         title: "Quality & background",
         body: "Portfolio review and background checks — we look at the work, not just the pitch deck.",
         image: {
-          src: "/images/studio.png",
-          alt: "Interior design studio with material samples",
+          src: "/images/pillar-quality.png",
+          alt: "Interior design studio with material samples and mood boards",
         },
       },
       {
         title: "Experience & portfolio",
         body: "Previous projects, client reviews, and credentials reviewed by our team in Pune.",
         image: {
-          src: "/images/hero-living-room.png",
-          alt: "Completed living room interior project",
+          src: "/images/pillar-portfolio.png",
+          alt: "Completed modern living room interior project",
         },
       },
       {
         title: "Location & specialization",
         body: "Matched by city, property type, and design style — not just whoever paid for a listing.",
         image: {
-          src: "/images/inquiry-homeowner.png",
-          alt: "Homeowner discussing design plans in Pune",
+          src: "/images/qualify-phone-dashboard.png",
+          alt: "Lead matching dashboard showing location and project details",
         },
       },
     ],
@@ -302,8 +302,8 @@ export const SERVICES = {
   description:
     "LeadLoom connects homeowners with verified, experienced interior designers — matched to your budget, style, and location. No guesswork. No hidden costs. Just confidence.",
   image: {
-    src: "/images/studio.png",
-    alt: "A bright interior design studio with fabric samples, blueprints, and a large wooden table",
+    src: "/images/services-matching.png",
+    alt: "Warm modern home interior with natural light",
   },
   offerings: [
     {
@@ -402,8 +402,8 @@ export const START_YOUR_SEARCH = {
   description:
     "Tell us a bit about your space and style. We'll confirm the details and connect you with one of our verified interior designers in Pune.",
   image: {
-    src: "/images/inquiry-homeowner.png",
-    alt: "Homeowner discussing design plans in a bright Pune apartment",
+    src: "/images/start-search.png",
+    alt: "Sunlit living room ready for an interior design consultation",
   },
 } as const;
 
