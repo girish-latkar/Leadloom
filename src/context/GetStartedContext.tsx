@@ -21,7 +21,6 @@ const GetStartedContext = createContext<GetStartedContextValue | null>(null);
 const FORM_HASHES: Record<string, Audience> = {
   "#homeowner-form": "homeowners",
   "#designer-form": "designers",
-  "#qualify": "homeowners",
   "#start-search": "homeowners",
   "#intake-form": "homeowners",
 };

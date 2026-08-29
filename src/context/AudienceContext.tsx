@@ -45,6 +45,27 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
+  const navigateToDesignerHash = useCallback(
+    (hash: string) => {
+      const targetId = hash.slice(1);
+
+      if (audienceRef.current === "designers") {
+        scrollToSection(targetId);
+        return;
+      }
+
+      pendingScroll.current = targetId;
+      setAudienceWithRef("designers");
+    },
+    [setAudienceWithRef],
+  );
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!DESIGNER_HASHES.has(hash)) return;
+    navigateToDesignerHash(hash);
+  }, [navigateToDesignerHash]);
+
   useEffect(() => {
     function onDocumentClick(e: MouseEvent) {
       const anchor = (e.target as Element).closest("a[href]") as HTMLAnchorElement | null;
@@ -54,26 +75,18 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
 
       if (DESIGNER_HASHES.has(href)) {
         e.preventDefault();
-        const targetId = href.slice(1);
-
-        if (audienceRef.current === "designers") {
-          scrollToSection(targetId);
-          return;
-        }
-
-        pendingScroll.current = targetId;
-        setAudienceWithRef("designers");
+        navigateToDesignerHash(href);
       }
     }
 
     document.addEventListener("click", onDocumentClick);
     return () => document.removeEventListener("click", onDocumentClick);
-  }, [setAudienceWithRef]);
+  }, [navigateToDesignerHash]);
 
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
-      return;
+      if (!pendingScroll.current) return;
     }
 
     const timer = window.setTimeout(() => {
