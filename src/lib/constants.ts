@@ -5,9 +5,9 @@
 
 export const SITE = {
   name: "Leadloom",
-  title: "Leadloom — Verified interior design leads in Pune",
+  title: "Find Interior Designers in Pune | Leadloom",
   description:
-    "Leadloom connects homeowners with verified interior designers in Pune. We qualify every lead so designers only meet projects that fit.",
+    "Tell us about your home, budget and style. Leadloom helps homeowners in Pune find interior designers suited to their project.",
   email: "leadloomconnect@gmail.com",
   phone: "+919552970123",
   location: "Pune, Maharashtra",
@@ -32,14 +32,14 @@ export const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
-  { href: "#contact", label: "Contact", audience: "homeowners" as const },
+  { href: "/contact", label: "Contact", audience: "homeowners" as const },
 ] as const;
 
 export const CTA = {
-  primaryLabel: "Get matched free",
-  navLabel: "Get matched",
-  reassurance: "Takes 60 seconds · No cost · No obligation to hire",
-  secondaryLabel: "See how it works →",
+  primaryLabel: "Find My Designer",
+  navLabel: "Find My Designer",
+  reassurance: "60 seconds · Free for homeowners · No obligation",
+  secondaryLabel: "See How It Works →",
   secondaryHref: "/services#how-it-works",
   designerLabel: "Apply as a designer",
   navDesignerLabel: "Apply",
@@ -47,8 +47,7 @@ export const CTA = {
 } as const;
 
 export const SOCIAL_PROOF = {
-  stat: "48",
-  label: "verified designers in Pune",
+  fallbackLabel: "Verified interior designers in Pune",
 } as const;
 
 export const PUNE_AREAS = [
@@ -67,7 +66,7 @@ export const FAQ = [
   {
     question: "Is it really free?",
     answer:
-      "Yes — completely free for homeowners. No registration fees, consultation charges, or hidden costs. You only pay a designer if you choose to hire them.",
+      "Yes. Leadloom is free for homeowners — there are no registration or consultation charges, and you are never obligated to hire a designer.",
   },
   {
     question: "How fast do I hear back?",
@@ -75,14 +74,34 @@ export const FAQ = [
       "We respond within 24 hours with one or two designer introductions matched to your project, budget, and style.",
   },
   {
+    question: "What happens after I submit my project?",
+    answer:
+      "We review your requirements, confirm any missing details if needed, and introduce you to one or two interior designers in Pune who fit your location, budget, property type, and style.",
+  },
+  {
     question: "What if I don't like the match?",
     answer:
       "Tell us what didn't fit — style, budget, or timeline — and we'll refine the search. There's no obligation to hire anyone we introduce.",
   },
   {
+    question: "Do I have to hire a designer?",
+    answer:
+      "No. Leadloom is free to use and there is no obligation to hire. You decide whether to move forward after meeting your shortlisted designers.",
+  },
+  {
     question: "How do you verify designers?",
     answer:
-      "Every designer passes business identity checks, portfolio review, background verification, and is matched by location and specialization before joining our network.",
+      "Every designer is reviewed before joining our network — including business and identity information, portfolio work, and relevant experience. We also match by location and specialization.",
+  },
+  {
+    question: "How are designers matched to my project?",
+    answer:
+      "We use the details you share — area in Pune, property type, budget range, timeline, and design style — to identify one or two designers whose experience and portfolio fit your project.",
+  },
+  {
+    question: "What information do you share with designers?",
+    answer:
+      "We share the project details needed for a meaningful introduction — such as your name, contact information, location, property type, budget range, timeline, and style preferences.",
   },
   {
     question: "What areas in Pune do you cover?",
@@ -97,10 +116,10 @@ export const FAQ = [
 ] as const;
 
 export const HERO = {
-  eyebrow: "Verified interior designers, matched to you — Pune.",
-  heading: "A real living room makes clearer decisions than a mood board ever will.",
+  eyebrow: "Interior designer matching in Pune",
+  heading: "Find the right interior designer for your home.",
   description:
-    "Share your project once. We match you to vetted designers whose portfolio and pricing genuinely fit — no cold calls, no directory scrolling.",
+    "Share your project, budget and style. We'll match you with interior designers in Pune who fit your requirements.",
   image: {
     src: "/images/hero-living-room.png",
     alt: "Interior designer placing a fabric swatch in a sunlit Pune living room",
@@ -166,25 +185,25 @@ export const LEAD_QUALIFICATION = {
 export const TESTIMONIALS = {
   designers: {
     eyebrow: "What designers say",
-    heading: "0 wasted trips since we started screening",
+    heading: "Fewer wasted trips since we started screening",
     items: [
       {
         quote:
-          "What I liked most about LeadLoom is that the conversations start with clarity. Instead of spending time figuring out a client's budget or requirements from scratch, I get inquiries with useful details already in place. It makes the entire process feel more professional and helps me focus on creating great designs rather than chasing leads.",
+          "What I liked most about Leadloom is that the conversations start with clarity. Instead of spending time figuring out a client's budget or requirements from scratch, I get inquiries with useful details already in place. It makes the entire process feel more professional and helps me focus on creating great designs rather than chasing leads.",
         name: "Shivani Suthar",
         role: "Interior Designer, Pune",
         image: "/images/shivani_suthar.png",
       },
       {
         quote:
-          "As a designer, finding the right clients is often harder than designing the space itself. LeadLoom makes that process much smoother by connecting me with homeowners who are genuinely planning their interiors. The experience feels organized, transparent, and much more efficient than relying only on social media inquiries.",
+          "As a designer, finding the right clients is often harder than designing the space itself. Leadloom makes that process much smoother by connecting me with homeowners who are genuinely planning their interiors. The experience feels organized, transparent, and much more efficient than relying only on social media inquiries.",
         name: "Sumit Andhere",
         role: "Interior Designer, Pune",
         image: "/images/sumit_andhere.png",
       },
       {
         quote:
-          "I've worked with different lead sources before, but LeadLoom stands out because it feels built specifically for interior designers. The platform helps connect me with homeowners who already have a project in mind, which means discussions are more meaningful from the very first call. It's a practical approach that saves time and builds confidence.",
+          "I've worked with different lead sources before, but Leadloom stands out because it feels built specifically for interior designers. The platform helps connect me with homeowners who already have a project in mind, which means discussions are more meaningful from the very first call. It's a practical approach that saves time and builds confidence.",
         name: "Mayur Kashikar",
         role: "Independent interior consultant",
         image: "/images/mayur_kashikar.png",
@@ -197,10 +216,10 @@ export const TESTIMONIALS = {
     items: [
       {
         quote:
-          "We were overwhelmed choosing a designer for our bunglow in Bibavewadi. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
+          "We were overwhelmed choosing a designer for our bunglow in Bibwewadi. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
         name: "Ankit Shelke",
         role: "Homeowner, Bibwewadi",
-        tag: "Bungalow · Bibavewadi",
+        tag: "Bunglow · Bibwewadi",
         image: "/images/ankit_shelke.png",
       },
       {
@@ -213,7 +232,7 @@ export const TESTIMONIALS = {
       },
       {
         quote:
-          "As first-time renovators, we had no idea where to start. Leadloom helped us clarify our 3 BHK project before connecting us with a verified designer in Pune. It saved us weeks of guesswork.",
+          "As first-time renovators, we had no idea where to start. Leadloom helped us clarify our 3 BHK project before connecting us with a matched designer in Pune. It saved us weeks of guesswork.",
         name: "Abhijeet Shinde",
         role: "Homeowner, Hadapsar",
         tag: "3 BHK · Hadapsar",
@@ -224,7 +243,7 @@ export const TESTIMONIALS = {
 } as const;
 
 export const PUNE_NETWORK = {
-  heading: "Join our Pune network of verified interior designers and real homeowners.",
+  heading: "Join our Pune network of interior designers and homeowners.",
   description:
     "We screen every lead so you only spend time on projects that are the right fit. No spam, just serious homeowners in Pune.",
   image: {
@@ -236,6 +255,7 @@ export const PUNE_NETWORK = {
 export const FOUNDER = {
   name: "Pritam",
   role: "Founder, Leadloom",
+  sectionHeading: "Why we started",
   story:
     "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. We check the fit first — budget, style, timeline — before anyone gets your number.",
   image: {
@@ -246,23 +266,23 @@ export const FOUNDER = {
 
 export const ABOUT = {
   eyebrow: "About Leadloom",
-  tagline: "India's trusted platform",
+  tagline: "Pune-focused interior designer matching",
   heading: "Your Dream Home Deserves the Right Designer",
   description:
-    "Buying a home is one of life's biggest milestones. Leadloom makes the next step — finding the right interior designer — just as meaningful. We connect homeowners with verified professionals based on project requirements, budget, style, and location.",
+    "Buying a home is one of life's biggest milestones. Leadloom makes the next step — finding the right interior designer — just as meaningful. We connect homeowners with reviewed professionals based on project requirements, budget, style, and location.",
   image: {
     src: "/images/about-designers.png",
     alt: "Interior designers reviewing blueprints and design materials together",
   },
   verification: {
     eyebrow: "Why Leadloom",
-    heading: "Every designer is thoroughly verified",
+    heading: "How we verify designers",
     description:
-      "We don't randomly assign designers. Every professional undergoes a rigorous verification process before joining our network.",
+      "We don't randomly assign designers. Every professional is reviewed before joining our network.",
     pillars: [
       {
         title: "Business & identity",
-        body: "Registration, GST, and identity verification before any designer joins the network.",
+        body: "Business registration, GST and identity information are reviewed before joining the network.",
         image: {
           src: "/images/qualify-phone-desk.png",
           alt: "Designer reviewing verification documents at a desk",
@@ -270,7 +290,7 @@ export const ABOUT = {
       },
       {
         title: "Quality & background",
-        body: "Portfolio review and background checks — we look at the work, not just the pitch deck.",
+        body: "Portfolio and background information are reviewed — we look at the work, not just the pitch deck.",
         image: {
           src: "/images/pillar-quality.png",
           alt: "Interior design studio with material samples and mood boards",
@@ -278,7 +298,7 @@ export const ABOUT = {
       },
       {
         title: "Experience & portfolio",
-        body: "Previous projects, client reviews, and credentials reviewed by our team in Pune.",
+        body: "Previous work, client reviews and relevant credentials are reviewed where available.",
         image: {
           src: "/images/pillar-portfolio.png",
           alt: "Completed modern living room interior project",
@@ -286,7 +306,7 @@ export const ABOUT = {
       },
       {
         title: "Location & specialization",
-        body: "Matched by city, property type, and design style — not just whoever paid for a listing.",
+        body: "Designers are matched according to project location, property type and design specialization.",
         image: {
           src: "/images/qualify-phone-dashboard.png",
           alt: "Lead matching dashboard showing location and project details",
@@ -300,7 +320,7 @@ export const SERVICES = {
   eyebrow: "Our services",
   heading: "Find the right interior designer with confidence",
   description:
-    "LeadLoom connects homeowners with verified, experienced interior designers — matched to your budget, style, and location. No guesswork. No hidden costs. Just confidence.",
+    "Leadloom connects homeowners with experienced interior designers in Pune — matched to your budget, style, and location.",
   image: {
     src: "/images/services-matching.png",
     alt: "Warm modern home interior with natural light",
@@ -318,12 +338,12 @@ export const SERVICES = {
     },
     {
       title: "For homeowners",
-      body: "Share your vision, budget, and project requirements. LeadLoom connects you with trusted interior designers who match your goals — with no obligation to hire.",
+      body: "Share your vision, budget, and project requirements. Leadloom introduces you to one or two interior designers who fit — with no obligation to hire.",
       points: [
-        "Background-checked and portfolio-verified professionals",
-        "Matched by style, location, budget, and project type",
-        "Compare quotes, timelines, and materials before you decide",
-        "Completely free — no registration, consultation, or hidden fees",
+        "Reviewed professionals with portfolios checked in advance",
+        "Matched by style, location, budget, and property type",
+        "Meet your shortlisted designers and decide who is right for you",
+        "Free for homeowners — no registration or consultation charges",
       ],
     },
   ],
@@ -339,17 +359,17 @@ export const SERVICES = {
       {
         num: "02",
         title: "Designer matching",
-        body: "We identify suitable verified designers",
+        body: "We identify one or two suitable designers",
       },
       {
         num: "03",
-        title: "Receive quotes",
-        body: "Get detailed proposals from matched designers",
+        title: "Meet your matches",
+        body: "We introduce you to designers who fit your project",
       },
       {
         num: "04",
-        title: "Compare & choose",
-        body: "Review portfolios, timelines, and pricing",
+        title: "Review & decide",
+        body: "Compare portfolios, timelines, and proposals",
       },
       {
         num: "05",
@@ -359,26 +379,26 @@ export const SERVICES = {
     ],
   },
   quoteComparison: {
-    eyebrow: "Quote comparison",
-    heading: "Compare quotes with full transparency",
+    eyebrow: "Make an informed decision",
+    heading: "Review your shortlisted options with clarity",
     description:
-      "Receive detailed quotations from multiple verified designers. LeadLoom helps you compare beyond just the price — so you can make a truly informed decision.",
+      "After we introduce you to one or two matched designers, you can review their portfolio, pricing approach, timeline, and scope before deciding — without juggling endless calls or directory listings.",
     points: [
-      "Pricing & timeline",
+      "Portfolio and design approach",
+      "Pricing and timeline",
       "Material specifications",
-      "Scope of work",
-      "Warranty & payment terms",
+      "Scope of work and payment terms",
     ],
   },
   benefits: {
-    headline: "₹0 to use Leadloom, ever",
+    headline: "Free for homeowners",
     description:
-      "Leadloom is free for homeowners — no registration charges, no consultation fees, no hidden costs, and no obligation to hire.",
+      "Leadloom is free for homeowners. There are no registration or consultation charges, and you are never obligated to hire a designer.",
     items: [
-      "No registration fees, subscription, or hidden charges — ever",
-      "Skip weeks of research — we match you with suitable designers quickly",
-      "Avoid unverified contractors and unreliable service",
-      "Background-verified professionals with proven track records",
+      "Skip weeks of research — we shortlist suitable designers for you",
+      "Meet designers matched to your budget, style, and timeline",
+      "Reviewed professionals with portfolios checked in advance",
+      "No obligation to hire — you choose if and when to move forward",
     ],
   },
 } as const;
@@ -400,7 +420,7 @@ export const START_YOUR_SEARCH = {
   eyebrow: "Start your search",
   heading: "Not sure if your project is ready? Let's talk it through.",
   description:
-    "Tell us a bit about your space and style. We'll confirm the details and connect you with one of our verified interior designers in Pune.",
+    "Tell us a bit about your space and style. We'll confirm the details and introduce you to one or two interior designers in Pune who fit.",
   image: {
     src: "/images/start-search.png",
     alt: "Sunlit living room ready for an interior design consultation",
@@ -443,19 +463,58 @@ export const HOMEOWNER_PANEL = {
   tag: "Teal thread — homeowners",
   heading: "Find the designer who actually gets your home.",
   description:
-    "Tell us about your space and your taste once. We match you to vetted designers whose portfolio and pricing genuinely fit — no cold calls, no directory scrolling.",
+    "Tell us about your space and your taste once. We match you with interior designers whose experience, style and project requirements fit — without endless calls or directory scrolling.",
   features: [
-    "Matched by style and project type, not just distance",
-    "Every designer's portfolio and reviews verified in advance",
-    "One thoughtful introduction, not ten unsolicited calls",
-    "Free for homeowners, always",
+    "Matched by style and property type, not just distance",
+    "Portfolios reviewed before any introduction",
+    "One or two thoughtful introductions, not ten unsolicited calls",
+    "Free for homeowners",
   ],
-  cta: { href: "#homeowner-form", label: "Get matched free" },
+  cta: { href: "#homeowner-form", label: "Find My Designer" },
+} as const;
+
+export const WHY_HOMEOWNERS = {
+  eyebrow: "Why homeowners use Leadloom",
+  heading: "A simpler way to find the right designer",
+  description:
+    "Share your project once. We shortlist interior designers in Pune who fit — so you can focus on choosing the right person, not searching endlessly.",
+  traditional: {
+    title: "The usual approach",
+    points: [
+      "Search Instagram and directories",
+      "Call multiple studios",
+      "Repeat your requirements each time",
+      "Compare designers manually",
+    ],
+  },
+  leadloom: {
+    title: "With Leadloom",
+    points: [
+      "Tell us about your project",
+      "We understand your requirements",
+      "We identify suitable designers",
+      "You meet the shortlist",
+      "You decide",
+    ],
+  },
+} as const;
+
+export const MATCHING_CRITERIA = {
+  heading: "How we match you",
+  description:
+    "We use the details you share in your project request to identify designers who fit.",
+  items: ["Location", "Budget", "Property type", "Project type", "Design style", "Timeline"],
 } as const;
 
 export const FOOTER_LINKS = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
-  { href: "#contact", label: "Contact Us" },
+  { href: "/contact", label: "Contact Us" },
+] as const;
+
+export const LEGAL_LINKS = [
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Use" },
+  { href: "/disclaimer", label: "Disclaimer" },
 ] as const;

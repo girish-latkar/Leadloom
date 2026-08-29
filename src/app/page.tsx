@@ -1,6 +1,7 @@
 import { SiteShell } from "@/components/layout/SiteShell";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { MainContent } from "@/components/sections/MainContent";
-import { createPageMetadata } from "@/lib/seo";
+import { createPageMetadata, getFaqStructuredData } from "@/lib/seo";
 import { SITE } from "@/lib/constants";
 
 export const metadata = createPageMetadata({
@@ -12,6 +13,7 @@ export const metadata = createPageMetadata({
 export default function HomePage() {
   return (
     <SiteShell>
+      <JsonLd data={getFaqStructuredData()} />
       <MainContent />
     </SiteShell>
   );

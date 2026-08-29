@@ -35,7 +35,7 @@ export const INTAKE_FORM: LeadFormConfig = {
   id: "intake-form",
   formId: "form-intake",
   accent: "teal",
-  tag: "Get matched",
+  tag: "Find My Designer",
   heading: "Tell us about your project",
   sub: "Three quick fields — we'll follow up within 24 hours with a designer match.",
   rows: [
@@ -71,8 +71,8 @@ export const INTAKE_FORM: LeadFormConfig = {
       },
     ],
   ],
-  submitLabel: "Get matched free",
-  finePrint: "Always free for homeowners. No obligation to hire.",
+  submitLabel: "Find My Designer",
+  finePrint: "Free for homeowners. No obligation to hire.",
   success: {
     title: "Request received",
     body: "We're finding your match now. Expect to hear from us within 24 hours.",
@@ -190,8 +190,8 @@ export const HOMEOWNER_FORM: LeadFormConfig = {
       },
     ],
   ],
-  submitLabel: "Get matched free",
-  finePrint: "Always free for homeowners. We'll follow up within 2 business days with your match.",
+  submitLabel: "Find My Designer",
+  finePrint: "Free for homeowners. We'll follow up within 2 business days with your match.",
   success: {
     title: "Request received",
     body: "We're finding your match now. Expect to hear from us within 2 business days with a designer intro.",
@@ -204,7 +204,7 @@ export const INQUIRY_FORM: LeadFormConfig = {
   accent: "teal",
   tag: "Start your search  - Homeowners",
   heading: "Not sure if your project is ready? Let's talk it through.",
-  sub: "Tell us a bit about your space and style. We'll confirm the details and connect you with one of our verified interior designers in Pune.",
+  sub: "Tell us a bit about your space and style. We'll confirm the details and introduce you to one or two interior designers in Pune who fit.",
   rows: [
     [
       { name: "name", label: "Your name", type: "text", required: true, placeholder: "Your name" },

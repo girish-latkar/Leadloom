@@ -50,8 +50,10 @@ export function useTheme() {
   // Sync with the persisted value after mount (SSR-safe).
   useEffect(() => {
     const saved = readSaved();
-    setMode(saved);
-    applyToDocument(saved);
+    requestAnimationFrame(() => {
+      setMode(saved);
+      applyToDocument(saved);
+    });
   }, []);
 
   const cycleMode = useCallback(() => {

@@ -23,13 +23,10 @@ export function About() {
           <Reveal delay={0.1}>
             <div className="font-mono text-xs tracking-[0.14em] text-teal uppercase">{ABOUT.tagline}</div>
             <div className="mt-3 font-mono text-xs tracking-[0.14em] text-gold uppercase">{ABOUT.eyebrow}</div>
-            <h2 className="mt-4 font-display text-[clamp(28px,3.4vw,40px)] leading-[1.12] font-medium tracking-[-0.02em]">
+            <h1 className="mt-4 font-display text-[clamp(28px,3.4vw,40px)] leading-[1.12] font-medium tracking-[-0.02em]">
               {ABOUT.heading}
-            </h2>
+            </h1>
             <p className="mt-5 text-[15px] leading-[1.75] text-paper-dim">{ABOUT.description}</p>
-            <p className="mt-6 max-w-[540px] font-display text-[clamp(18px,2.4vw,22px)] leading-[1.5] text-paper-dim italic">
-              {FOUNDER.story}
-            </p>
           </Reveal>
         </div>
 
@@ -44,7 +41,10 @@ export function About() {
             />
           </Reveal>
           <Reveal delay={0.08}>
-            <div className="font-display text-[22px] font-medium">{FOUNDER.name}</div>
+            <div className="font-mono text-xs tracking-[0.14em] text-grey uppercase">
+              {FOUNDER.sectionHeading}
+            </div>
+            <div className="mt-3 font-display text-[22px] font-medium">{FOUNDER.name}</div>
             <div className="mt-1 text-sm text-grey">{FOUNDER.role}</div>
             <p className="mt-3 max-w-[560px] text-[15px] leading-relaxed text-paper-dim">{FOUNDER.story}</p>
           </Reveal>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 import { cn } from "@/lib/cn";
 import type { LeadFormConfig } from "@/lib/formConfig";
@@ -9,7 +9,7 @@ import { ThreadTag } from "@/components/ui/ThreadTag";
 import { SuccessCheckIcon } from "@/components/ui/icons";
 import { FormField } from "@/components/forms/FormField";
 import { TurnstileField } from "@/components/forms/TurnstileField";
-import { isTurnstileEnabled } from "@/lib/turnstileConfig";
+import { isTurnstileClientEnabled } from "@/lib/turnstileClient";
 import { validateField, validateFormFields } from "@/lib/validateFormFields";
 
 type Phase = "editing" | "submitting" | "fading" | "submitted";
@@ -30,11 +30,7 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileResetKey, setTurnstileResetKey] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
-  const [turnstileRequired, setTurnstileRequired] = useState(false);
-
-  useEffect(() => {
-    setTurnstileRequired(isTurnstileEnabled());
-  }, []);
+  const turnstileRequired = isTurnstileClientEnabled();
 
   const fieldId = (name: string) => `${config.formId}-${name}`;
   const formFields = config.rows.flat();

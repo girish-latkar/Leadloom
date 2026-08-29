@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-import { getTurnstileSiteKey, isTurnstileEnabled } from "@/lib/turnstileConfig";
+import { getTurnstileSiteKey, isTurnstileClientEnabled } from "@/lib/turnstileClient";
 
 declare global {
   interface Window {
@@ -70,7 +70,10 @@ export function TurnstileField({ onVerify, onExpire, onError, resetKey }: Turnst
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const callbacksRef = useRef({ onVerify, onExpire, onError });
-  callbacksRef.current = { onVerify, onExpire, onError };
+
+  useEffect(() => {
+    callbacksRef.current = { onVerify, onExpire, onError };
+  }, [onVerify, onExpire, onError]);
 
   useEffect(() => {
     if (!siteKey || !containerRef.current) return;
@@ -112,7 +115,7 @@ export function TurnstileField({ onVerify, onExpire, onError, resetKey }: Turnst
     };
   }, [resetKey, siteKey]);
 
-  if (!isTurnstileEnabled()) return null;
+  if (!isTurnstileClientEnabled()) return null;
 
   return (
     <div className="mt-5">

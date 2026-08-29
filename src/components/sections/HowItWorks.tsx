@@ -10,7 +10,7 @@ export function HowItWorks() {
           className="mb-14"
           eyebrow="How the match gets made"
           heading="Three checks happen before anyone sees a lead."
-          description="Most platforms sell contact information. Leadloom sells fit — every homeowner request is qualified and every designer profile is verified before a single thread is woven between them."
+          description="Most platforms sell contact information. Leadloom sells fit — every homeowner request is qualified and every designer profile is reviewed before a single thread is woven between them."
         />
 
         <div className="grid grid-cols-3 gap-px border border-line bg-line max-[820px]:grid-cols-1">

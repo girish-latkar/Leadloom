@@ -44,7 +44,8 @@ export async function enforceRegistrationRateLimit(
 
   if (!limiter) {
     if (process.env.NODE_ENV === "production" && !isRateLimitConfigured()) {
-      console.warn("[rate-limit] Upstash is not configured — rate limiting disabled.");
+      console.error("[rate-limit] Upstash is not configured in production.");
+      return { ok: false, message: GENERIC_ERROR };
     }
     return { ok: true };
   }
@@ -53,7 +54,7 @@ export async function enforceRegistrationRateLimit(
   const result = await limiter.limit(identifier);
 
   if (!result.success) {
-    console.warn("[rate-limit] Registration request blocked.", { identifier });
+    console.warn("[rate-limit] Registration request blocked.");
     return {
       ok: false,
       message: GENERIC_ERROR,

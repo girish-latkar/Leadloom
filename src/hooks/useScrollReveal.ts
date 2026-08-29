@@ -17,7 +17,7 @@ export function useScrollReveal<T extends HTMLElement>() {
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced || !("IntersectionObserver" in window)) {
-      setInView(true);
+      requestAnimationFrame(() => setInView(true));
       return;
     }
 

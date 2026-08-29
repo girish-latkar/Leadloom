@@ -14,7 +14,7 @@ export function useCountUp(target: number, durationMs = 900) {
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduced) {
-      setValue(target);
+      requestAnimationFrame(() => setValue(target));
       return;
     }
 

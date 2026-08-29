@@ -73,7 +73,7 @@ NEXT_PUBLIC_TURNSTILE_SITE_KEY=
 TURNSTILE_SECRET_KEY=
 ```
 
-Optional (recommended for production rate limiting):
+Required for production (submissions are rejected without Upstash):
 
 ```env
 UPSTASH_REDIS_REST_URL=
@@ -104,9 +104,11 @@ Obtain SMTP settings from your email provider (Google Workspace, Microsoft 365, 
 1. Create a Turnstile widget in the [Cloudflare dashboard](https://dash.cloudflare.com/).
 2. Add the **site key** as `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (public; used by the browser widget).
 3. Add the **secret key** as `TURNSTILE_SECRET_KEY` (server-only; never expose to the client).
-4. In production, both keys are required. In local development, Cloudflare’s test keys are used automatically so the widget works on any hostname (`localhost`, LAN IP, etc.) without extra dashboard setup.
+4. In production, both keys are required. In local development, if both keys are set in `.env.local`, the real widget is used. If keys are omitted locally, Cloudflare’s test keys are used automatically — those show a **“For testing only”** banner and must not appear on your live site.
+5. In the Cloudflare Turnstile dashboard, add every hostname that will serve the form: your production domain (e.g. `leadloom.in`) and Vercel preview URLs (e.g. `*.vercel.app`) if you test forms on preview deployments.
+6. `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is embedded at **build time**. After adding or changing it in Vercel, trigger a new deployment.
 
-### Configure rate limiting (recommended for production)
+### Configure rate limiting (required for production)
 
 1. Create a free [Upstash Redis](https://upstash.com/) database.
 2. Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to your environment.

@@ -32,7 +32,7 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden border-b border-line">
-      {/* Mobile: full-bleed photo behind copy */}
+      {/* Mobile: full-bleed photo behind copy; desktop: side column — same asset, different layout */}
       <div className="relative min-h-[88vh] max-[900px]:flex max-[900px]:min-h-[82vh] max-[900px]:items-end max-[900px]:pb-10 max-sm:min-h-[80vh] max-sm:pb-8">
         <div
           className="pointer-events-none absolute inset-0 max-[900px]:block min-[901px]:hidden"
@@ -42,7 +42,6 @@ export function Hero() {
             src={HERO.image.src}
             alt=""
             fill
-            priority
             className="object-cover object-center"
             sizes="100vw"
             style={{ transform: `translateY(${parallaxOffset}px)` }}
@@ -80,6 +79,7 @@ export function Hero() {
               >
                 {CTA.secondaryLabel}
               </a>
+              <p className="text-xs leading-relaxed text-grey">{CTA.reassurance}</p>
             </div>
           </div>
 

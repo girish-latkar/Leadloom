@@ -1,6 +1,6 @@
 import "server-only";
 
-import { getTurnstileSecretKey, isTurnstileEnabled } from "@/lib/turnstileConfig";
+import { getTurnstileSecretKey, isTurnstileServerEnabled } from "@/lib/server/turnstileServer";
 
 interface TurnstileVerifyResponse {
   success: boolean;
@@ -11,7 +11,7 @@ export async function verifyTurnstileToken(
   token: unknown,
   remoteIp: string | null,
 ): Promise<{ ok: true } | { ok: false }> {
-  if (!isTurnstileEnabled()) {
+  if (!isTurnstileServerEnabled()) {
     if (process.env.NODE_ENV === "production") {
       console.error("[turnstile] Turnstile is not configured in production.");
       return { ok: false };

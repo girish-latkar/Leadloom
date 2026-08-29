@@ -29,14 +29,17 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
   const pendingScroll = useRef<string | null>(null);
   const isFirstRender = useRef(true);
 
-  audienceRef.current = audience;
-
-  const setAudience = useCallback((next: Audience) => {
+  const setAudienceWithRef = useCallback((next: Audience) => {
+    audienceRef.current = next;
     setAudienceState(next);
   }, []);
 
-  const showDesigners = useCallback(() => setAudienceState("designers"), []);
-  const showHomeowners = useCallback(() => setAudienceState("homeowners"), []);
+  const setAudience = useCallback((next: Audience) => {
+    setAudienceWithRef(next);
+  }, [setAudienceWithRef]);
+
+  const showDesigners = useCallback(() => setAudienceWithRef("designers"), [setAudienceWithRef]);
+  const showHomeowners = useCallback(() => setAudienceWithRef("homeowners"), [setAudienceWithRef]);
 
   function scrollToSection(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -59,13 +62,13 @@ export function AudienceProvider({ children }: { children: ReactNode }) {
         }
 
         pendingScroll.current = targetId;
-        setAudienceState("designers");
+        setAudienceWithRef("designers");
       }
     }
 
     document.addEventListener("click", onDocumentClick);
     return () => document.removeEventListener("click", onDocumentClick);
-  }, []);
+  }, [setAudienceWithRef]);
 
   useEffect(() => {
     if (isFirstRender.current) {

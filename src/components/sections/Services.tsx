@@ -8,7 +8,6 @@ import { cn } from "@/lib/cn";
 import { CheckIcon } from "@/components/ui/icons";
 import { GetMatchedButton } from "@/components/ui/GetMatchedButton";
 import { Reveal } from "@/components/ui/Reveal";
-import { useCountUp } from "@/hooks/useCountUp";
 
 type ServicesAudience = "homeowners" | "designers";
 
@@ -28,14 +27,11 @@ function StepCard({
   body: string;
   index: number;
 }) {
-  const stepNumber = Number.parseInt(num, 10);
-  const { ref, value } = useCountUp(stepNumber);
-
   return (
     <Reveal delay={index * 0.08} className="snap-center">
       <article className="flex h-full min-h-[260px] flex-col justify-between rounded-md border border-line bg-ink-card px-5 py-7 sm:min-h-[280px] sm:px-6 sm:py-8">
-        <div ref={ref} className="font-display text-[clamp(40px,7vw,72px)] leading-none font-medium text-teal/80">
-          {String(value).padStart(2, "0")}
+        <div className="font-display text-[clamp(40px,7vw,72px)] leading-none font-medium text-teal/80">
+          {num}
         </div>
         <div>
           <h4 className="font-display text-[18px] font-medium tracking-[-0.01em] sm:text-[20px]">{title}</h4>
@@ -56,9 +52,9 @@ export function Services() {
         <Reveal className="flex flex-col items-stretch gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="min-w-0">
             <div className="font-mono text-xs tracking-[0.14em] text-gold uppercase">{SERVICES.eyebrow}</div>
-            <h2 className="mt-3 font-display text-[clamp(28px,3.4vw,40px)] leading-[1.12] font-medium tracking-[-0.02em]">
+            <h1 className="mt-3 font-display text-[clamp(28px,3.4vw,40px)] leading-[1.12] font-medium tracking-[-0.02em]">
               {SERVICES.heading}
-            </h2>
+            </h1>
           </div>
           <div
             role="tablist"

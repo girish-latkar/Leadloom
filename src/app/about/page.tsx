@@ -5,9 +5,9 @@ import { About } from "@/components/sections/About";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "About",
+  title: "About Leadloom — Interior Designer Matching in Pune",
   description:
-    "LeadLoom connects homeowners with verified interior designers in Pune — matched by budget, style, and location. No guesswork. No hidden costs.",
+    "Learn how Leadloom reviews interior designers in Pune and matches homeowners by budget, style, location and project requirements.",
   path: "/about",
 });
 

@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS, CONTACT_INFO } from "@/lib/constants";
 import { cn } from "@/lib/cn";
 import { Logo } from "@/components/ui/Logo";
 import { AudienceToggle } from "@/components/layout/AudienceToggle";
@@ -11,7 +12,6 @@ import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { GetMatchedButton } from "@/components/ui/GetMatchedButton";
 import { Button } from "@/components/ui/Button";
 import { useAudience } from "@/context/AudienceContext";
-import { useFooterContact } from "@/context/FooterContactContext";
 
 function PhoneIcon() {
   return (
@@ -31,7 +31,6 @@ export function Navbar() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const { audience } = useAudience();
-  const { showContact } = useFooterContact();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -58,14 +57,6 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    function onContactToggle() {
-      setMobileOpen(false);
-    }
-    window.addEventListener("leadloom:contact-toggle", onContactToggle);
-    return () => window.removeEventListener("leadloom:contact-toggle", onContactToggle);
   }, []);
 
   useEffect(() => {
@@ -109,14 +100,14 @@ export function Navbar() {
             scrolled ? "h-[60px]" : "h-[72px]",
           )}
         >
-          <a href="/" onClick={goHome} className="group flex items-center no-underline">
+          <Link href="/" onClick={goHome} className="group flex items-center no-underline">
             <Logo
               className={cn(
                 "transition-all duration-300 group-hover:opacity-85",
                 scrolled ? "h-8 w-[120px]" : "h-9 w-[136px]",
               )}
             />
-          </a>
+          </Link>
 
           <div className="hidden min-[821px]:flex items-center justify-center gap-8">
             <div className="flex items-center gap-7 text-sm text-grey">
@@ -132,7 +123,7 @@ export function Navbar() {
                     "after:transition-transform after:duration-[350ms] after:ease-out-loom",
                     "hover:after:origin-left hover:after:scale-x-100",
                     "audience" in link && link.audience !== audience && "opacity-60",
-                    link.href === "#contact" && showContact && "text-gold after:origin-left after:scale-x-100",
+                    pathname === link.href && "text-gold after:origin-left after:scale-x-100",
                   )}
                 >
                   {link.label}
@@ -146,8 +137,8 @@ export function Navbar() {
             <div className="hidden items-center gap-3 min-[821px]:flex">
               <ThemeToggle />
               <a
-                href={`tel:${SITE.phone}`}
-                aria-label="Call Leadloom"
+                href={`tel:${CONTACT_INFO.phone}`}
+                aria-label={`Call Leadloom at ${CONTACT_INFO.phoneDisplay}`}
                 className={cn(
                   "flex size-[38px] shrink-0 items-center justify-center rounded-full border border-line text-grey",
                   "transition-[border-color,background-color,transform] duration-200 ease-out-loom",
@@ -222,16 +213,9 @@ export function Navbar() {
         )}
       >
         <div className="flex h-[72px] items-center justify-between border-b border-line px-6">
-          <a
-            href="/"
-            onClick={(event) => {
-              goHome(event);
-              setMobileOpen(false);
-            }}
-            className="inline-flex no-underline"
-          >
+          <Link href="/" onClick={goHome} className="inline-flex no-underline">
             <Logo className="h-8 w-[120px]" />
-          </a>
+          </Link>
           <button
             aria-label="Close menu"
             onClick={() => setMobileOpen(false)}
@@ -266,7 +250,7 @@ export function Navbar() {
                 "flex w-full items-center justify-center rounded-lg px-3 py-3.5 text-center text-[15px] font-medium text-grey no-underline",
                 "transition-all duration-300 ease-out-loom hover:bg-(--btn-outline-hover-bg) hover:text-paper",
                 mobileOpen ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0",
-                link.href === "#contact" && showContact && "text-gold",
+                pathname === link.href && "text-gold",
               )}
             >
               {link.label}
@@ -278,12 +262,12 @@ export function Navbar() {
 
         <div className="flex flex-col gap-3 px-4 pt-6">
           <Button
-            href={`tel:${SITE.phone}`}
+            href={`tel:${CONTACT_INFO.phone}`}
             variant="ghost"
             className="w-full justify-center px-5 hover:translate-y-0 active:translate-y-0"
           >
             <PhoneIcon />
-            Call
+            {CONTACT_INFO.phoneDisplay}
           </Button>
           <GetMatchedButton
             variant="teal"

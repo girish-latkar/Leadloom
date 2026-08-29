@@ -7,6 +7,7 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { PuneNetwork } from "@/components/sections/PuneNetwork";
 import { DesignerJoin } from "@/components/sections/DesignerJoin";
 import { StartYourSearch } from "@/components/sections/StartYourSearch";
+import { WhyHomeowners } from "@/components/sections/WhyHomeowners";
 import { Faq } from "@/components/sections/Faq";
 
 export function MainContent() {
@@ -25,6 +26,7 @@ export function MainContent() {
       ) : (
         <>
           <Testimonials />
+          <WhyHomeowners />
           <StartYourSearch />
           <Faq />
         </>

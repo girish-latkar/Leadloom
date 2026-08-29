@@ -4,17 +4,15 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
 import { useAudience } from "@/context/AudienceContext";
-import { SOCIAL_PROOF, TESTIMONIALS } from "@/lib/constants";
+import { TESTIMONIALS } from "@/lib/constants";
+import { getSocialProofLabel } from "@/lib/socialProof";
 import { cn } from "@/lib/cn";
-import { useCountUp } from "@/hooks/useCountUp";
 import { Reveal } from "@/components/ui/Reveal";
 
 export function Testimonials() {
   const { audience } = useAudience();
   const content = TESTIMONIALS[audience];
   const [activeIndex, setActiveIndex] = useState(0);
-  const statTarget = Number(SOCIAL_PROOF.stat);
-  const { ref: statRef, value: statValue } = useCountUp(statTarget);
 
   const goTo = useCallback(
     (index: number) => {
@@ -42,8 +40,8 @@ export function Testimonials() {
             {content.heading}
           </h2>
           {isHomeowner && (
-            <p ref={statRef} className="mt-4 font-display text-[clamp(22px,3vw,30px)] text-teal">
-              <span className="font-medium">{statValue}</span> {SOCIAL_PROOF.label}
+            <p className="mt-4 font-display text-[clamp(22px,3vw,30px)] text-teal">
+              {getSocialProofLabel()}
             </p>
           )}
         </Reveal>
