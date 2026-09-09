@@ -1,6 +1,6 @@
 const PRODUCTION_SITE_URL = "https://leadloom.in";
 
-/** Canonical site origin for metadata, sitemap, and structured data. */
+/** Canonical site origin for metadata, sitemap, robots, and structured data. */
 export function getSiteUrl(): string {
   const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   if (configured) return configured.replace(/\/$/, "");

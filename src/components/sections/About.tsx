@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { ABOUT, FOUNDER } from "@/lib/constants";
+import { ABOUT, TEAM } from "@/lib/constants";
 import { Reveal } from "@/components/ui/Reveal";
 import { GetMatchedButton } from "@/components/ui/GetMatchedButton";
 
@@ -30,24 +30,46 @@ export function About() {
           </Reveal>
         </div>
 
-        <div className="mt-20 grid grid-cols-[auto_1fr] items-center gap-6 border-y border-line py-10 max-sm:grid-cols-1">
-          <Reveal className="relative mx-auto h-28 w-28 overflow-hidden rounded-full max-sm:h-24 max-sm:w-24">
-            <Image
-              src={FOUNDER.image.src}
-              alt={FOUNDER.image.alt}
-              fill
-              className="object-cover object-center"
-              sizes="112px"
-            />
-          </Reveal>
-          <Reveal delay={0.08}>
-            <div className="font-mono text-xs tracking-[0.14em] text-grey uppercase">
-              {FOUNDER.sectionHeading}
+        <div className="mt-20 divide-y divide-line border-y border-line">
+          {TEAM.map((member, index) => (
+            <div
+              key={member.name}
+              className="grid grid-cols-[auto_1fr] items-center gap-6 py-10 max-sm:grid-cols-1"
+            >
+              <Reveal className="relative mx-auto h-28 w-28 overflow-hidden rounded-full max-sm:h-24 max-sm:w-24">
+                {"placeholder" in member.image && member.image.placeholder ? (
+                  <div
+                    className="flex h-full w-full items-center justify-center bg-teal-soft font-display text-3xl text-paper"
+                    aria-hidden="true"
+                  >
+                    {member.image.initials}
+                  </div>
+                ) : (
+                  <Image
+                    src={member.image.src}
+                    alt={member.image.alt}
+                    fill
+                    className="object-cover object-center"
+                    sizes="112px"
+                  />
+                )}
+              </Reveal>
+              <Reveal delay={0.08}>
+                {"sectionHeading" in member ? (
+                  <h2 className="font-mono text-xs tracking-[0.14em] text-grey uppercase">
+                    {member.sectionHeading}
+                  </h2>
+                ) : null}
+                <h3
+                  className={`font-display text-[22px] font-medium ${"sectionHeading" in member ? "mt-3" : ""}`}
+                >
+                  {member.name}
+                </h3>
+                <div className="mt-1 text-sm text-grey">{member.role}</div>
+                <p className="mt-3 max-w-[560px] text-[15px] leading-relaxed text-paper-dim">{member.story}</p>
+              </Reveal>
             </div>
-            <div className="mt-3 font-display text-[22px] font-medium">{FOUNDER.name}</div>
-            <div className="mt-1 text-sm text-grey">{FOUNDER.role}</div>
-            <p className="mt-3 max-w-[560px] text-[15px] leading-relaxed text-paper-dim">{FOUNDER.story}</p>
-          </Reveal>
+          ))}
         </div>
 
         <div className="mt-20">
@@ -55,9 +77,9 @@ export function About() {
             <div className="font-mono text-xs tracking-[0.14em] text-grey uppercase">
               {ABOUT.verification.eyebrow}
             </div>
-            <h3 className="mt-3 max-w-[640px] font-display text-[clamp(24px,3vw,34px)] leading-[1.12] font-medium tracking-[-0.02em]">
+            <h2 className="mt-3 max-w-[640px] font-display text-[clamp(24px,3vw,34px)] leading-[1.12] font-medium tracking-[-0.02em]">
               {ABOUT.verification.heading}
-            </h3>
+            </h2>
             <p className="mt-4 max-w-[620px] text-[15px] leading-[1.75] text-paper-dim">
               {ABOUT.verification.description}
             </p>
@@ -71,7 +93,7 @@ export function About() {
                 className="grid grid-cols-[1.1fr_0.9fr] items-center gap-8 overflow-hidden rounded-md border border-line bg-ink-card max-[820px]:grid-cols-1"
               >
                 <div className="px-7 py-8 max-sm:px-5">
-                  <h4 className="font-display text-[clamp(22px,2.8vw,28px)] font-medium">{pillar.title}</h4>
+                  <h3 className="font-display text-[clamp(22px,2.8vw,28px)] font-medium">{pillar.title}</h3>
                   <p className="mt-3 max-w-[520px] text-[15px] leading-relaxed text-grey">{pillar.body}</p>
                 </div>
                 <div className="relative aspect-[16/10] min-h-[200px] max-[820px]:aspect-[16/9]">

@@ -5,6 +5,7 @@ import { getSiteUrl } from "@/lib/siteUrl";
 
 const OG_IMAGE_PATH = "/images/hero-living-room.png";
 const LOGO_PATH = "/logo/logo-light.png";
+const FAVICON_PATH = "/logo/logo-light.png";
 const OG_IMAGE_WIDTH = 1344;
 const OG_IMAGE_HEIGHT = 768;
 
@@ -25,7 +26,7 @@ export function createPageMetadata({ title, description, path }: PageMetadataOpt
   const ogImage = getOgImageUrl();
 
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical },
     openGraph: {
@@ -98,9 +99,37 @@ export function getRootMetadata(): Metadata {
       },
     },
     icons: {
-      icon: [{ url: OG_IMAGE_PATH, type: "image/png" }],
-      apple: OG_IMAGE_PATH,
+      icon: [{ url: FAVICON_PATH, type: "image/png" }],
+      apple: FAVICON_PATH,
     },
+  };
+}
+
+export function getNotFoundMetadata(): Metadata {
+  return {
+    title: { absolute: "Page Not Found | Leadloom" },
+    description: "The page you requested could not be found on Leadloom.",
+    robots: { index: false, follow: true },
+  };
+}
+
+interface BreadcrumbItem {
+  name: string;
+  path: string;
+}
+
+export function getBreadcrumbStructuredData(items: BreadcrumbItem[]) {
+  const siteUrl = getSiteUrl();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.path === "/" ? siteUrl : `${siteUrl}${item.path}`,
+    })),
   };
 }
 
@@ -108,14 +137,27 @@ export function getStructuredData() {
   const siteUrl = getSiteUrl();
   const sameAs = SOCIAL_LINKS.map((link) => link.href);
 
-  const localBusiness = {
+  const organization = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "Organization",
     "@id": `${siteUrl}/#organization`,
     name: SITE.name,
     description: SITE.description,
     url: siteUrl,
     logo: `${siteUrl}${LOGO_PATH}`,
+    image: getOgImageUrl(),
+    email: CONTACT_INFO.email,
+    telephone: CONTACT_INFO.phone,
+    sameAs,
+  };
+
+  const localBusiness = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${siteUrl}/#localbusiness`,
+    name: SITE.name,
+    description: SITE.description,
+    url: siteUrl,
     image: getOgImageUrl(),
     telephone: CONTACT_INFO.phone,
     email: CONTACT_INFO.email,
@@ -129,7 +171,7 @@ export function getStructuredData() {
       "@type": "City",
       name: "Pune",
     },
-    sameAs,
+    parentOrganization: { "@id": `${siteUrl}/#organization` },
   };
 
   const website = {
@@ -143,7 +185,7 @@ export function getStructuredData() {
     inLanguage: "en-IN",
   };
 
-  return [localBusiness, website];
+  return [organization, localBusiness, website];
 }
 
 export function getFaqStructuredData() {

@@ -252,17 +252,31 @@ export const PUNE_NETWORK = {
   },
 } as const;
 
-export const FOUNDER = {
-  name: "Pritam",
-  role: "Founder, Leadloom",
-  sectionHeading: "Why we started",
-  story:
-    "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. We check the fit first — budget, style, timeline — before anyone gets your number.",
-  image: {
-    src: "/images/founder-portrait.png",
-    alt: "Pritam, founder of Leadloom",
+export const TEAM = [
+  {
+    name: "Pritam",
+    role: "Co-founder, Leadloom",
+    sectionHeading: "Why we started",
+    story:
+      "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. We check the fit first — budget, style, timeline — before anyone gets your number.",
+    image: {
+      src: "/images/founder-portrait.png",
+      alt: "Pritam, co-founder of Leadloom",
+    },
   },
-} as const;
+  {
+    name: "Sharvary Patil",
+    role: "Co-founder, Leadloom",
+    story:
+      "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. Sharvary helps homeowners navigate the process with clarity — so every match is based on fit, not guesswork.",
+    image: {
+      src: "/images/sharvary_patil.png",
+      alt: "Sharvary Patil, co-founder of Leadloom",
+      placeholder: true,
+      initials: "SP",
+    },
+  },
+] as const;
 
 export const ABOUT = {
   eyebrow: "About Leadloom",

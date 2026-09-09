@@ -1,7 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Button } from "@/components/ui/Button";
+import { getNotFoundMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = getNotFoundMetadata();
 
 export default function NotFound() {
   return (

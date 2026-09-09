@@ -3,10 +3,11 @@ import type { Metadata } from "next";
 import { ContactDetails } from "@/components/layout/ContactDetails";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { SocialLinks } from "@/components/layout/SocialLinks";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { GetMatchedButton } from "@/components/ui/GetMatchedButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { CTA, SITE } from "@/lib/constants";
-import { createPageMetadata } from "@/lib/seo";
+import { createPageMetadata, getBreadcrumbStructuredData } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Contact Leadloom | Interior Designer Matching in Pune",
@@ -18,6 +19,12 @@ export const metadata: Metadata = createPageMetadata({
 export default function ContactPage() {
   return (
     <SiteShell>
+      <JsonLd
+        data={getBreadcrumbStructuredData([
+          { name: "Home", path: "/" },
+          { name: "Contact", path: "/contact" },
+        ])}
+      />
       <section id="contact" className="scroll-mt-[72px] border-b border-line bg-ink-soft py-24 max-sm:py-20">
         <div className="mx-auto max-w-[760px] px-8 max-sm:px-5">
           <Reveal>

@@ -22,12 +22,14 @@ export function Faq() {
         <div className="mt-10 divide-y divide-line border-y border-line">
           {FAQ.map((item, index) => {
             const open = openIndex === index;
+            const answerId = `faq-answer-${index}`;
             return (
               <Reveal key={item.question} delay={index * 0.06}>
                 <div>
                   <button
                     type="button"
                     aria-expanded={open}
+                    aria-controls={answerId}
                     onClick={() => setOpenIndex(open ? null : index)}
                     className={cn(
                       "flex w-full items-start justify-between gap-4 py-5 text-left",
@@ -46,6 +48,7 @@ export function Faq() {
                     </span>
                   </button>
                   <div
+                    id={answerId}
                     className={cn(
                       "grid transition-[grid-template-rows] duration-300 ease-out-loom",
                       open ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
