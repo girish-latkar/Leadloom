@@ -18,9 +18,9 @@ function buildContentSecurityPolicy(): string {
     "frame-ancestors 'self'",
     "object-src 'none'",
     scriptSrc,
-    "style-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: blob: https://challenges.cloudflare.com",
-    "font-src 'self'",
+    "font-src 'self' https://fonts.gstatic.com",
     connectSrc,
     "frame-src 'self' https://challenges.cloudflare.com",
   ].join("; ");

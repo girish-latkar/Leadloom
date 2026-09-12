@@ -131,10 +131,13 @@
   --color-teal: var(--teal);
   --color-teal-soft: var(--teal-soft);
 
-  /* fonts (variables provided by next/font in layout.tsx) */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  /* fonts (loaded via Google Fonts link in layout.tsx) */
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-fraunces: "Fraunces", ui-serif, Georgia, serif;
+  --font-jetbrains-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains-mono);
 
   /* easings */
   --ease-out-loom: cubic-bezier(0.22, 1, 0.36, 1);

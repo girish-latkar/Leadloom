@@ -22,7 +22,7 @@ export const CONTACT_INFO = {
 } as const;
 
 export const SOCIAL_LINKS = [
-  { platform: "instagram" as const, label: "Instagram", href: "https://www.instagram.com/leadloompune?igsh=MXRxd2xvOHR3NzExcg==" },
+  { platform: "instagram" as const, label: "Instagram", href: "https://instagram.com/leadloompune" },
   { platform: "twitter" as const, label: "Twitter", href: "https://twitter.com/leadloom" },
   { platform: "linkedin" as const, label: "LinkedIn", href: "https://linkedin.com/company/leadloom" },
   { platform: "whatsapp" as const, label: "WhatsApp", href: `https://wa.me/${SITE.phone.replace(/\D/g, "")}` },
@@ -216,10 +216,10 @@ export const TESTIMONIALS = {
     items: [
       {
         quote:
-          "We were overwhelmed choosing a designer for our bunglow in Bibwewadi. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
+          "We were overwhelmed choosing a designer for our bungalow in Bibwewadi. Leadloom matched us with someone who understood our budget and style from day one. No cold calls, no pressure — just one thoughtful introduction.",
         name: "Ankit Shelke",
         role: "Homeowner, Bibwewadi",
-        tag: "Bunglow · Bibwewadi",
+        tag: "Bungalow · Bibwewadi",
         image: "/images/ankit_shelke.png",
       },
       {
@@ -259,22 +259,14 @@ export const TEAM = [
     sectionHeading: "Why we started",
     story:
       "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. We check the fit first — budget, style, timeline — before anyone gets your number.",
-    image: {
-      src: "/images/founder-portrait.png",
-      alt: "Pritam, co-founder of Leadloom",
-    },
+    initials: "P",
   },
   {
     name: "Sharvary Patil",
     role: "Co-founder, Leadloom",
     story:
-      "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. Sharvary helps homeowners navigate the process with clarity — so every match is based on fit, not guesswork.",
-    image: {
-      src: "/images/sharvary_patil.png",
-      alt: "Sharvary Patil, co-founder of Leadloom",
-      placeholder: true,
-      initials: "SP",
-    },
+      "When homeowners reach out, they're often juggling budget questions, style choices, and timeline pressure all at once. I guide each project through our matching process — clarifying requirements, setting expectations, and making sure every introduction is based on fit, not guesswork.",
+    initials: "SP",
   },
 ] as const;
 

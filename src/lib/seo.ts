@@ -47,7 +47,24 @@ export function createPageMetadata({ title, description, path }: PageMetadataOpt
   };
 }
 
-export function getRootMetadata(): Metadata {
+function getRobotsMetadata(indexable: boolean): Metadata["robots"] {
+  if (!indexable) {
+    return { index: false, follow: false };
+  }
+
+  return {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  };
+}
+
+export function getRootMetadata(indexable = true): Metadata {
   const siteUrl = getSiteUrl();
   const ogImage = getOgImageUrl();
 
@@ -88,16 +105,7 @@ export function getRootMetadata(): Metadata {
       description: SITE.description,
       images: [ogImage],
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
+    robots: getRobotsMetadata(indexable),
     icons: {
       icon: [{ url: FAVICON_PATH, type: "image/png" }],
       apple: FAVICON_PATH,
@@ -135,7 +143,14 @@ export function getBreadcrumbStructuredData(items: BreadcrumbItem[]) {
 
 export function getStructuredData() {
   const siteUrl = getSiteUrl();
-  const sameAs = SOCIAL_LINKS.map((link) => link.href);
+  const sameAs = SOCIAL_LINKS.filter((link) =>
+    ["instagram", "twitter", "linkedin"].includes(link.platform),
+  ).map((link) => link.href);
+
+  const founders = [
+    { "@type": "Person", name: "Pritam" },
+    { "@type": "Person", name: "Sharvary Patil" },
+  ];
 
   const organization = {
     "@context": "https://schema.org",
@@ -147,7 +162,8 @@ export function getStructuredData() {
     logo: `${siteUrl}${LOGO_PATH}`,
     image: getOgImageUrl(),
     email: CONTACT_INFO.email,
-    telephone: CONTACT_INFO.phone,
+    telephone: CONTACT_INFO.phoneDisplay,
+    founder: founders,
     sameAs,
   };
 
@@ -159,8 +175,9 @@ export function getStructuredData() {
     description: SITE.description,
     url: siteUrl,
     image: getOgImageUrl(),
-    telephone: CONTACT_INFO.phone,
+    telephone: CONTACT_INFO.phoneDisplay,
     email: CONTACT_INFO.email,
+    founder: founders,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Pune",

@@ -37,22 +37,12 @@ export function About() {
               className="grid grid-cols-[auto_1fr] items-center gap-6 py-10 max-sm:grid-cols-1"
             >
               <Reveal className="relative mx-auto h-28 w-28 overflow-hidden rounded-full max-sm:h-24 max-sm:w-24">
-                {"placeholder" in member.image && member.image.placeholder ? (
-                  <div
-                    className="flex h-full w-full items-center justify-center bg-teal-soft font-display text-3xl text-paper"
-                    aria-hidden="true"
-                  >
-                    {member.image.initials}
-                  </div>
-                ) : (
-                  <Image
-                    src={member.image.src}
-                    alt={member.image.alt}
-                    fill
-                    className="object-cover object-center"
-                    sizes="112px"
-                  />
-                )}
+                <div
+                  className="flex h-full w-full items-center justify-center bg-teal-soft font-display text-3xl text-paper"
+                  aria-hidden="true"
+                >
+                  {member.initials}
+                </div>
               </Reveal>
               <Reveal delay={0.08}>
                 {"sectionHeading" in member ? (

@@ -1,14 +1,15 @@
 # Leadloom — Next.js + Tailwind CSS
 
-Interior design lead-matching landing page, converted from static HTML/CSS/JS to **Next.js 16 (App Router)** with **Tailwind CSS v4** and TypeScript.
+Interior design lead-matching marketing site for Pune, built with **Next.js 16 (App Router)**, **Tailwind CSS v4**, and TypeScript. Production domain: [leadloom.in](https://leadloom.in).
 
 ## Getting started
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build
-npm start        # serve production build
+cp .env.example .env.local   # then fill in values
+npm run dev                  # http://localhost:3000
+npm run build                # production build
+npm start                    # serve production build
 ```
 
 ## Directory structure
@@ -16,42 +17,38 @@ npm start        # serve production build
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout: fonts (next/font), metadata, pre-hydration theme script
-│   ├── page.tsx            # Home page composing all sections
-│   └── globals.css         # Theme tokens (dark/light), Tailwind theme mapping, keyframes
+│   ├── layout.tsx          # Root layout: fonts, dynamic metadata, JSON-LD, theme script
+│   ├── page.tsx            # Home page
+│   ├── about/              # About page
+│   ├── services/           # Services page
+│   ├── contact/            # Contact page
+│   ├── privacy/            # Privacy policy
+│   ├── terms/              # Terms of use
+│   ├── disclaimer/         # Disclaimer
+│   ├── not-found.tsx       # 404 page
+│   ├── robots.ts           # Host-aware robots.txt
+│   ├── sitemap.ts          # Sitemap (production URLs only)
+│   ├── api/submit-lead/    # Lead form API
+│   └── globals.css         # Theme tokens, Tailwind theme mapping, keyframes
 ├── components/
-│   ├── layout/
-│   │   ├── Navbar.tsx      # Sticky nav with scroll state
-│   │   ├── Footer.tsx
-│   │   └── ThemeToggle.tsx # Cycles auto → light → dark
-│   ├── sections/
-│   │   ├── Hero.tsx        # Staggered fade-up entrance
-│   │   ├── LoomVisual.tsx  # Animated gold/teal thread SVG
-│   │   ├── SectionHead.tsx
-│   │   ├── HowItWorks.tsx
-│   │   ├── AudiencePanels.tsx
-│   │   └── LeadForms.tsx
-│   ├── forms/
-│   │   ├── LeadForm.tsx    # Config-driven form: validation, fade-out, success state
-│   │   └── FormField.tsx   # Input / select / textarea with accent focus + error shake
-│   └── ui/
-│       ├── Button.tsx      # gold / teal / ghost variants (link or button)
-│       ├── Reveal.tsx      # Scroll-reveal wrapper
-│       ├── ThreadTag.tsx
-│       └── icons.tsx
-├── hooks/
-│   ├── useTheme.ts         # auto/light/dark with localStorage persistence
-│   └── useScrollReveal.ts  # IntersectionObserver, respects reduced motion
+│   ├── layout/             # Navbar, Footer, SiteShell, ContactDetails, SocialLinks
+│   ├── sections/           # Hero, FAQ, Testimonials, About, Services, etc.
+│   ├── forms/              # LeadForm, FormField
+│   ├── seo/                # JsonLd helper
+│   └── ui/                 # Button, Reveal, GetMatchedButton, ThemeToggle, etc.
+├── hooks/                  # useTheme, useScrollReveal, useAudience
 └── lib/
-    ├── constants.ts        # Copy, nav links, option lists
+    ├── constants.ts        # Copy, nav links, FAQ, team, social links
+    ├── seo.ts              # Metadata helpers, structured data
+    ├── siteUrl.ts          # Production URL + indexability helpers
     ├── formConfig.ts       # Designer & homeowner form definitions
-    └── cn.ts               # Class name helper
+    └── server/             # Rate limiting, Turnstile, email delivery
 ```
 
-## Key conversion notes
+## Key notes
 
-- **Theming** — the original CSS custom properties are kept as runtime tokens in `globals.css` and exposed to Tailwind via `@theme inline`, so utilities like `bg-ink`, `text-paper`, `border-line` respond to theme changes. Dark is default; light applies via system preference or `data-theme="light"`. An inline script in `layout.tsx` applies a saved manual theme before first paint to prevent flash.
-- **Fonts** — Fraunces, Inter, and JetBrains Mono are self-hosted via `next/font/google` (no render-blocking `<link>` tags) and wired into Tailwind's `font-display` / `font-sans` / `font-mono`.
+- **Theming** — CSS custom properties in `globals.css` are exposed to Tailwind via `@theme inline`, so utilities like `bg-ink`, `text-paper`, and `border-line` respond to theme changes. Dark is default; light applies via system preference or `data-theme="light"`. An inline script in `layout.tsx` applies a saved manual theme before first paint to prevent flash.
+- **Fonts** — Fraunces, Inter, and JetBrains Mono load from Google Fonts via `<link>` tags in `layout.tsx` and are wired into Tailwind's `font-display` / `font-sans` / `font-mono`. CSP allows `fonts.googleapis.com` (stylesheets) and `fonts.gstatic.com` (font files).
 - **Animations** — keyframes (`fade-up`, `draw-line`, `node-pulse`, `shake`, `success-in`, `draw-check`) are registered in `@theme` and used as `animate-*` utilities. `prefers-reduced-motion` is respected globally and in the reveal hook.
 - **Forms** — config-driven `LeadForm` component with client-side checks, honeypot field, optional Cloudflare Turnstile, and a server API at `/api/submit-lead`. Submissions are validated on the server, optionally rate-limited via Upstash Redis, and delivered to your inbox through Nodemailer over SMTP. See [Registration email delivery](#registration-email-delivery) below.
 
@@ -62,6 +59,8 @@ Registration and lead forms submit to `POST /api/submit-lead`. The server valida
 ### Required environment variables
 
 ```env
+NEXT_PUBLIC_SITE_URL=https://leadloom.in
+
 SMTP_HOST=
 SMTP_PORT=
 SMTP_SECURE=
@@ -125,13 +124,20 @@ Obtain SMTP settings from your email provider (Google Workspace, Microsoft 365, 
 ### Deploy safely
 
 1. Add all production environment variables to your host (Vercel, etc.).
-2. Confirm outbound SMTP is allowed from your hosting environment.
-3. Configure Turnstile for your production domain.
-4. Configure Upstash for production rate limiting.
-5. Run `npm run build` before deploying.
+2. Set `NEXT_PUBLIC_SITE_URL=https://leadloom.in` in production.
+3. Confirm outbound SMTP is allowed from your hosting environment.
+4. Configure Turnstile for your production domain.
+5. Configure Upstash for production rate limiting.
+6. Run `npm run build` before deploying.
 
 ### SEO
 
-The site ships with sitemap (`/sitemap.xml`), robots (`/robots.txt`), Open Graph / Twitter metadata, canonical URLs, and LocalBusiness + WebSite JSON-LD.
+The site ships with:
 
-Set `NEXT_PUBLIC_SITE_URL` to your production origin (e.g. `https://leadloom.in`) before deploying so canonical links, the sitemap, and social previews use the correct domain.
+- **Sitemap** (`/sitemap.xml`) — always lists production URLs from `NEXT_PUBLIC_SITE_URL`
+- **Robots** (`/robots.txt`) — host-aware: production allows crawling; preview/Vercel URLs disallow all
+- **Canonical URLs & Open Graph** — always point at the production origin (`NEXT_PUBLIC_SITE_URL`), even on preview deployments
+- **Indexing** — only `leadloom.in` (or whatever host matches `NEXT_PUBLIC_SITE_URL`) gets `index, follow`; all other hosts get `noindex, nofollow`
+- **JSON-LD** — Organization, LocalBusiness, and WebSite sitewide; FAQPage on the homepage (generated from the shared `FAQ` constant in `constants.ts`)
+
+Set `NEXT_PUBLIC_SITE_URL` to your production origin (e.g. `https://leadloom.in`) before deploying. This is the single source of truth for canonical links, sitemap URLs, Open Graph URLs, and structured data.
