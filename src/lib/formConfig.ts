@@ -37,9 +37,12 @@ export const INTAKE_FORM: LeadFormConfig = {
   accent: "teal",
   tag: "Find My Designer",
   heading: "Tell us about your project",
-  sub: "Three quick fields — we'll follow up within 24 hours with a designer match.",
+  sub: "A few quick fields — we'll follow up within 24 hours with a designer match.",
   rows: [
-    [{ name: "name", label: "Your name", type: "text", required: true, placeholder: "Priya Shah" }],
+    [
+      { name: "name", label: "Your name", type: "text", required: true, placeholder: "Priya Shah" },
+      { name: "email", label: "Email address", type: "email", required: true, placeholder: "you@email.com" },
+    ],
     [
       {
         name: "phone",
@@ -142,7 +145,7 @@ export const HOMEOWNER_FORM: LeadFormConfig = {
   rows: [
     [
       { name: "name", label: "Full name", type: "text", required: true, placeholder: "Priya Shah" },
-      { name: "email", label: "Email", type: "email", required: true, placeholder: "priya@email.com" },
+      { name: "email", label: "Email address", type: "email", required: true, placeholder: "priya@email.com" },
     ],
     [
       { name: "phone", label: "Phone", type: "tel", phoneLocale: "in", placeholder: "+91 98765 43210" },
