@@ -259,14 +259,20 @@ export const TEAM = [
     sectionHeading: "Why we started",
     story:
       "We started Leadloom in Pune because homeowners were choosing designers off Instagram likes, not fit. We check the fit first — budget, style, timeline — before anyone gets your number.",
-    initials: "P",
+    image: {
+      src: "/images/pritam-autade.jpeg",
+      alt: "Pritam, co-founder of Leadloom",
+    },
   },
   {
     name: "Sharvary Patil",
     role: "Co-founder, Leadloom",
     story:
       "When homeowners reach out, they're often juggling budget questions, style choices, and timeline pressure all at once. I guide each project through our matching process — clarifying requirements, setting expectations, and making sure every introduction is based on fit, not guesswork.",
-    initials: "SP",
+    image: {
+      src: "/images/sharvary-patil.png",
+      alt: "Sharvary Patil, co-founder of Leadloom",
+    },
   },
 ] as const;
 
