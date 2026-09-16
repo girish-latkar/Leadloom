@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { getTurnstileSiteKey, isTurnstileClientEnabled } from "@/lib/turnstileClient";
 
@@ -66,10 +66,15 @@ function loadTurnstileScript(): Promise<void> {
 }
 
 export function TurnstileField({ onVerify, onExpire, onError, resetKey }: TurnstileFieldProps) {
-  const siteKey = getTurnstileSiteKey();
+  const [hostname, setHostname] = useState<string | null>(null);
+  const siteKey = getTurnstileSiteKey(hostname);
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const callbacksRef = useRef({ onVerify, onExpire, onError });
+
+  useEffect(() => {
+    setHostname(window.location.hostname);
+  }, []);
 
   useEffect(() => {
     callbacksRef.current = { onVerify, onExpire, onError };
@@ -115,7 +120,7 @@ export function TurnstileField({ onVerify, onExpire, onError, resetKey }: Turnst
     };
   }, [resetKey, siteKey]);
 
-  if (!isTurnstileClientEnabled()) return null;
+  if (!isTurnstileClientEnabled(hostname)) return null;
 
   return (
     <div className="mt-5">

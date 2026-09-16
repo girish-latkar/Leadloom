@@ -8,6 +8,7 @@ import { isRateLimitConfigured } from "@/lib/server/emailConfig";
 const GENERIC_ERROR = "Unable to submit your registration right now. Please try again.";
 
 let ratelimit: Ratelimit | null = null;
+let missingUpstashWarningLogged = false;
 
 function getRateLimiter(): Ratelimit | null {
   if (!isRateLimitConfigured()) return null;
@@ -43,9 +44,11 @@ export async function enforceRegistrationRateLimit(
   const limiter = getRateLimiter();
 
   if (!limiter) {
-    if (process.env.NODE_ENV === "production" && !isRateLimitConfigured()) {
-      console.error("[rate-limit] Upstash is not configured in production.");
-      return { ok: false, message: GENERIC_ERROR };
+    if (!missingUpstashWarningLogged) {
+      missingUpstashWarningLogged = true;
+      console.warn(
+        "[rate-limit] Upstash is not configured — registration rate limiting is disabled. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN to enable it.",
+      );
     }
     return { ok: true };
   }

@@ -10,8 +10,9 @@ interface TurnstileVerifyResponse {
 export async function verifyTurnstileToken(
   token: unknown,
   remoteIp: string | null,
+  requestHost?: string | null,
 ): Promise<{ ok: true } | { ok: false }> {
-  if (!isTurnstileServerEnabled()) {
+  if (!isTurnstileServerEnabled(requestHost)) {
     if (process.env.NODE_ENV === "production") {
       console.error("[turnstile] Turnstile is not configured in production.");
       return { ok: false };
@@ -24,7 +25,7 @@ export async function verifyTurnstileToken(
     return { ok: false };
   }
 
-  const secret = getTurnstileSecretKey();
+  const secret = getTurnstileSecretKey(requestHost);
   if (!secret) {
     console.error("[turnstile] Secret key is missing.");
     return { ok: false };

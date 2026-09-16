@@ -81,6 +81,7 @@ export async function POST(request: Request) {
     const turnstile = await verifyTurnstileToken(
       (payload as { turnstileToken?: unknown }).turnstileToken,
       getClientIdentifier(request),
+      request.headers.get("host"),
     );
 
     if (!turnstile.ok) {
@@ -96,7 +97,16 @@ export async function POST(request: Request) {
     }
 
     console.error("[submit-lead] Registration submission failed.", error);
-    return Response.json({ success: false, message: GENERIC_ERROR }, { status: 500 });
+
+    const message =
+      process.env.NODE_ENV !== "production" &&
+      error instanceof Error &&
+      error.message &&
+      error.message !== "Registration email failed."
+        ? error.message
+        : GENERIC_ERROR;
+
+    return Response.json({ success: false, message }, { status: 500 });
   }
 }
 

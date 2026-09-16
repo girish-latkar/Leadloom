@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import { cn } from "@/lib/cn";
 import type { LeadFormConfig } from "@/lib/formConfig";
@@ -29,8 +29,13 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileResetKey, setTurnstileResetKey] = useState(0);
+  const [hostname, setHostname] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const turnstileRequired = isTurnstileClientEnabled();
+  const turnstileRequired = isTurnstileClientEnabled(hostname);
+
+  useEffect(() => {
+    setHostname(window.location.hostname);
+  }, []);
 
   const fieldId = (name: string) => `${config.formId}-${name}`;
   const formFields = config.rows.flat();
@@ -133,15 +138,15 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
       const result = (await response.json()) as { success?: boolean; message?: string };
 
       if (!response.ok || !result.success) {
-        throw new Error(GENERIC_ERROR);
+        throw new Error(result.message?.trim() || GENERIC_ERROR);
       }
 
       setPhase("fading");
       window.setTimeout(() => setPhase("submitted"), 350);
-    } catch {
+    } catch (error) {
       setPhase("editing");
       resetTurnstile();
-      setSubmitError(GENERIC_ERROR);
+      setSubmitError(error instanceof Error ? error.message : GENERIC_ERROR);
     }
   }
 

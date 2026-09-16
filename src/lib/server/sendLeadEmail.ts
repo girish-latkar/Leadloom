@@ -80,8 +80,23 @@ export async function sendLeadEmail(submission: ValidatedLeadSubmission) {
       error && typeof error === "object" && "code" in error
         ? String((error as { code: unknown }).code)
         : "unknown";
+    const responseCode =
+      error && typeof error === "object" && "responseCode" in error
+        ? String((error as { responseCode: unknown }).responseCode)
+        : undefined;
 
-    console.error("[registration-email] SMTP delivery failed.", { code });
+    console.error("[registration-email] SMTP delivery failed.", { code, responseCode });
+
+    if (process.env.NODE_ENV !== "production") {
+      if (code === "EAUTH") {
+        throw new Error(
+          "SMTP authentication failed. Check SMTP_USER and SMTP_PASSWORD in .env.local (use an app password for Gmail).",
+        );
+      }
+
+      throw new Error(`Registration email failed (${code}). Check SMTP settings in .env.local.`);
+    }
+
     throw new Error("Registration email failed.");
   }
 }

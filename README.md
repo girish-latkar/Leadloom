@@ -72,7 +72,7 @@ NEXT_PUBLIC_TURNSTILE_SITE_KEY=
 TURNSTILE_SECRET_KEY=
 ```
 
-Required for production (submissions are rejected without Upstash):
+Recommended for production (limits spam; submissions still work without it):
 
 ```env
 UPSTASH_REDIS_REST_URL=
@@ -103,11 +103,11 @@ Obtain SMTP settings from your email provider (Google Workspace, Microsoft 365, 
 1. Create a Turnstile widget in the [Cloudflare dashboard](https://dash.cloudflare.com/).
 2. Add the **site key** as `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (public; used by the browser widget).
 3. Add the **secret key** as `TURNSTILE_SECRET_KEY` (server-only; never expose to the client).
-4. In production, both keys are required. In local development, if both keys are set in `.env.local`, the real widget is used. If keys are omitted locally, Cloudflare’s test keys are used automatically — those show a **“For testing only”** banner and must not appear on your live site.
+4. In production, both keys are required and your production domain must be listed in the Turnstile widget hostnames. In local development (`npm run dev`), Cloudflare **test keys** are used automatically so forms work on `localhost` even when production keys are present in `.env.local` (the widget shows a **“For testing only”** banner).
 5. In the Cloudflare Turnstile dashboard, add every hostname that will serve the form: your production domain (e.g. `leadloom.in`) and Vercel preview URLs (e.g. `*.vercel.app`) if you test forms on preview deployments.
 6. `NEXT_PUBLIC_TURNSTILE_SITE_KEY` is embedded at **build time**. After adding or changing it in Vercel, trigger a new deployment.
 
-### Configure rate limiting (required for production)
+### Configure rate limiting (recommended for production)
 
 1. Create a free [Upstash Redis](https://upstash.com/) database.
 2. Add `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to your environment.
@@ -120,6 +120,8 @@ Obtain SMTP settings from your email provider (Google Workspace, Microsoft 365, 
 3. Submit a registration form on the site.
 4. Confirm the email arrives at `REGISTRATION_TO_EMAIL`.
 5. Test invalid email, missing required fields, HTML/script injection in message fields, and rapid duplicate clicks.
+
+**SMTP troubleshooting:** If submission fails with an authentication error (`EAUTH` / `535`), verify `SMTP_USER` and `SMTP_PASSWORD` in `.env.local`. For Gmail/Google Workspace, use an [app password](https://support.google.com/accounts/answer/185833) (not your regular login password) and set `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_SECURE=true`.
 
 ### Deploy safely
 

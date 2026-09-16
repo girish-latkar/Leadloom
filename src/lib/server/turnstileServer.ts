@@ -2,6 +2,7 @@ import "server-only";
 
 import {
   getConfiguredSiteKey,
+  shouldUseTurnstileTestKeys,
   TURNSTILE_TEST_SITE_KEY,
   type TurnstileMode,
 } from "@/lib/turnstileClient";
@@ -9,7 +10,9 @@ import {
 /** Cloudflare Turnstile dummy secret — always passes in local dev fallback. */
 const TURNSTILE_TEST_SECRET_KEY = "1x0000000000000000000000000000000AA";
 
-function resolveTurnstileServerMode(): TurnstileMode {
+function resolveTurnstileServerMode(requestHost?: string | null): TurnstileMode {
+  if (shouldUseTurnstileTestKeys(requestHost)) return "test";
+
   const siteKey = getConfiguredSiteKey();
   const secretKey = process.env.TURNSTILE_SECRET_KEY?.trim() ?? "";
 
@@ -28,19 +31,19 @@ function resolveTurnstileServerMode(): TurnstileMode {
   return "test";
 }
 
-export function getTurnstileSecretKey(): string {
-  const mode = resolveTurnstileServerMode();
+export function getTurnstileSecretKey(requestHost?: string | null): string {
+  const mode = resolveTurnstileServerMode(requestHost);
   if (mode === "configured") return process.env.TURNSTILE_SECRET_KEY!.trim();
   if (mode === "test") return TURNSTILE_TEST_SECRET_KEY;
   return "";
 }
 
 /** Whether the API must verify Turnstile tokens before accepting submissions. */
-export function isTurnstileServerEnabled(): boolean {
-  const mode = resolveTurnstileServerMode();
+export function isTurnstileServerEnabled(requestHost?: string | null): boolean {
+  const mode = resolveTurnstileServerMode(requestHost);
   if (mode === "disabled") return false;
 
   const siteKey = mode === "configured" ? getConfiguredSiteKey() : TURNSTILE_TEST_SITE_KEY;
-  const secretKey = getTurnstileSecretKey();
+  const secretKey = getTurnstileSecretKey(requestHost);
   return Boolean(siteKey && secretKey);
 }
