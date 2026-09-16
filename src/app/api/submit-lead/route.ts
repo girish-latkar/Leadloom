@@ -81,7 +81,6 @@ export async function POST(request: Request) {
     const turnstile = await verifyTurnstileToken(
       (payload as { turnstileToken?: unknown }).turnstileToken,
       getClientIdentifier(request),
-      request.headers.get("host"),
     );
 
     if (!turnstile.ok) {

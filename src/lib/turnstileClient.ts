@@ -7,40 +7,32 @@ export function getConfiguredSiteKey(): string {
   return process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim() ?? "";
 }
 
-/** Hostnames where production Turnstile keys are not valid (use Cloudflare test keys). */
-export function isLocalTurnstileHost(hostname: string | null | undefined): boolean {
-  if (!hostname) return false;
-
-  const host = hostname.split(":")[0]?.toLowerCase();
-  return host === "localhost" || host === "127.0.0.1";
-}
-
-export function shouldUseTurnstileTestKeys(hostname?: string | null): boolean {
-  if (process.env.NODE_ENV !== "production") return true;
-  return isLocalTurnstileHost(hostname);
+/** Use Cloudflare test keys only in non-production builds (never trust Host headers). */
+export function shouldUseTurnstileTestKeys(): boolean {
+  return process.env.NODE_ENV !== "production";
 }
 
 /** Client-safe mode resolution (secret key is not available in the browser). */
-export function resolveTurnstileClientMode(hostname?: string | null): TurnstileMode {
-  if (shouldUseTurnstileTestKeys(hostname)) return "test";
+export function resolveTurnstileClientMode(): TurnstileMode {
+  if (shouldUseTurnstileTestKeys()) return "test";
   if (getConfiguredSiteKey()) return "configured";
   if (process.env.NODE_ENV === "production") return "disabled";
   return "test";
 }
 
-export function getTurnstileSiteKey(hostname?: string | null): string {
-  const mode = resolveTurnstileClientMode(hostname);
+export function getTurnstileSiteKey(): string {
+  const mode = resolveTurnstileClientMode();
   if (mode === "configured") return getConfiguredSiteKey();
   if (mode === "test") return TURNSTILE_TEST_SITE_KEY;
   return "";
 }
 
 /** True when the dummy Cloudflare test key is in use (local dev fallback only). */
-export function isTurnstileTestMode(hostname?: string | null): boolean {
-  return resolveTurnstileClientMode(hostname) === "test";
+export function isTurnstileTestMode(): boolean {
+  return resolveTurnstileClientMode() === "test";
 }
 
 /** Whether the browser should render Turnstile. */
-export function isTurnstileClientEnabled(hostname?: string | null): boolean {
-  return resolveTurnstileClientMode(hostname) !== "disabled";
+export function isTurnstileClientEnabled(): boolean {
+  return resolveTurnstileClientMode() !== "disabled";
 }

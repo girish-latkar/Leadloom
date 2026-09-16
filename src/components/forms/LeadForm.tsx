@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 import { cn } from "@/lib/cn";
 import type { LeadFormConfig } from "@/lib/formConfig";
@@ -29,13 +29,8 @@ export function LeadForm({ config, embedded = false }: LeadFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [turnstileResetKey, setTurnstileResetKey] = useState(0);
-  const [hostname, setHostname] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const turnstileRequired = isTurnstileClientEnabled(hostname);
-
-  useEffect(() => {
-    setHostname(window.location.hostname);
-  }, []);
+  const turnstileRequired = isTurnstileClientEnabled();
 
   const fieldId = (name: string) => `${config.formId}-${name}`;
   const formFields = config.rows.flat();
