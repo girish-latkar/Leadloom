@@ -35,18 +35,34 @@ function parseFromAddress(raw: string): { fromName: string; fromEmail: string } 
 }
 
 function parseSecureFlag(raw: string | undefined): boolean {
-  const normalized = raw?.trim().toLowerCase();
+  const normalized = sanitizeEnvValue(raw)?.toLowerCase();
   return normalized === "true" || normalized === "1" || normalized === "yes";
 }
 
+/** Trim and strip accidental surrounding quotes from Vercel / .env values. */
+function sanitizeEnvValue(raw: string | undefined): string | undefined {
+  const trimmed = raw?.trim();
+  if (!trimmed) return undefined;
+
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1).trim();
+  }
+
+  return trimmed;
+}
+
 export function getRegistrationEmailConfig(): RegistrationEmailConfig {
-  const host = process.env.SMTP_HOST?.trim();
-  const portRaw = process.env.SMTP_PORT?.trim();
-  const user = process.env.SMTP_USER?.trim();
-  const password = process.env.SMTP_PASSWORD?.trim();
+  const host = sanitizeEnvValue(process.env.SMTP_HOST);
+  const portRaw = sanitizeEnvValue(process.env.SMTP_PORT);
+  const user = sanitizeEnvValue(process.env.SMTP_USER);
+  const password = sanitizeEnvValue(process.env.SMTP_PASSWORD);
   const toEmail =
-    process.env.REGISTRATION_TO_EMAIL?.trim() ?? process.env.REGISTRATION_EMAIL?.trim();
-  const fromRaw = process.env.REGISTRATION_FROM_EMAIL?.trim();
+    sanitizeEnvValue(process.env.REGISTRATION_TO_EMAIL) ??
+    sanitizeEnvValue(process.env.REGISTRATION_EMAIL);
+  const fromRaw = sanitizeEnvValue(process.env.REGISTRATION_FROM_EMAIL);
 
   if (!host || !portRaw || !user || !password || !toEmail || !fromRaw) {
     throw new Error("Registration email delivery is not configured.");

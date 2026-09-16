@@ -2,7 +2,7 @@ import "server-only";
 
 import { escapeHtml, sanitizeHeaderValue } from "@/lib/server/escapeHtml";
 import { getRegistrationEmailConfig } from "@/lib/server/emailConfig";
-import { getMailTransporter } from "@/lib/server/mailer";
+import { getMailTransporter, resetMailTransporter } from "@/lib/server/mailer";
 import type { ValidatedLeadSubmission } from "@/lib/server/validateLeadSubmission";
 
 function formatSubmittedAt(date: Date): string {
@@ -85,7 +85,16 @@ export async function sendLeadEmail(submission: ValidatedLeadSubmission) {
         ? String((error as { responseCode: unknown }).responseCode)
         : undefined;
 
-    console.error("[registration-email] SMTP delivery failed.", { code, responseCode });
+    resetMailTransporter();
+
+    console.error("[registration-email] SMTP delivery failed.", {
+      code,
+      responseCode,
+      host: config.host,
+      port: config.port,
+      secure: config.secure,
+      user: config.user.replace(/(.{2}).+(@.+)/, "$1***$2"),
+    });
 
     if (process.env.NODE_ENV !== "production") {
       if (code === "EAUTH") {
